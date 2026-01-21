@@ -66,10 +66,10 @@
     .position-tag { position: absolute; top: 6px; right: 6px; background: var(--accent); color: white; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 8px; }
     .device-card.expired .position-tag { background: var(--danger); }
     
-    .device-id { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 4px; word-break: break-all; font-family: var(--font-mono); padding-right: 30px; line-height: 1.4; }
+    .device-id { font-size: 13px; color: var(--accent); font-weight: 700; margin-bottom: 2px; word-break: break-all; font-family: var(--font-mono); padding-right: 30px; }
     .device-card.expired .device-id { color: var(--danger); }
     
-    .user-name-card { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .user-name-card { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
     
     .key-value { font-size: 10px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); padding: 5px 8px; border-radius: 5px; margin-bottom: 6px; cursor: pointer; word-break: break-all; text-align: center; }
     .device-card.expired .key-value { background: rgba(231,76,60,0.1); color: var(--danger); }
@@ -80,11 +80,11 @@
     .status-badge.online { background: rgba(39,174,96,0.15); color: var(--success); }
     .status-badge.offline { background: rgba(231,76,60,0.15); color: var(--danger); }
     
-    
+    .expired-badge { display: inline-block; background: var(--danger); color: white; font-size: 8px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-bottom: 6px; }
     
     .card-actions { display: flex; gap: 6px; align-items: center; }
     .toggle-container { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-    .expired-label { background: var(--danger); color: white; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 8px; white-space: nowrap; }
+    .toggle-expired-label { background: var(--danger); color: white; font-size: 8px; font-weight: 700; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
     .action-btn { flex: 1; padding: 6px; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .action-btn svg { width: 14px; height: 14px; }
     .action-btn.edit { background: rgba(52,152,219,0.15); color: #3498db; }
@@ -466,13 +466,14 @@
           <div class="key-value" onclick="copyKey('${item.key||''}')">${item.key || 'N/A'}</div>
           <div class="meta-row">
             <span class="expiry-text">${item.expirydate || 'N/A'}</span>
-            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'OFFLINE' : 'ONLINE'}</span>
+            ${exp ? '<span class="status-badge" style="background: var(--danger); color: white;">⚠️ EXPIRED</span>' : '<span class="status-badge ' + (item.Allowoffline ? 'offline' : 'online') + '">' + (item.Allowoffline ? 'OFFLINE' : 'ONLINE') + '</span>'}
           </div>
+          
           <div class="card-actions">
             <button class="action-btn edit" onclick="updateItem('${did}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
             <button class="action-btn delete" onclick="deleteItem('${did}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             <div class="toggle-container">
-              ${exp ? '<div class="expired-label">⚠️ EXPIRED</div>' : ''}
+              ${!en ? '<div class="toggle-expired-label">⚠️ DISABLED</div>' : ''}
               <label class="toggle-switch"><input type="checkbox" ${en ? 'checked' : ''} onchange="toggleEnable('${did}', this.checked)"><span class="toggle-slider"></span></label>
             </div>
           </div>`;
@@ -484,7 +485,7 @@
       const idx = currentData.findIndex(i => (i.device_id||i.id) === id);
       if (idx === -1) return;
       const p = (currentData[idx].expirydate || '01-01-2026').split('-');
-      currentData[idx].expirydate = `${p[0]}-${p[1]}-${en ? '2026' : '2020'}`;
+      currentData[idx].expirydate = `${p[0]}-${p[1]}-${en ? '2026' : '20XX'}`;
       if (await saveData()) { allDataArray = currentData; displayData(document.getElementById('searchInput').value); showToast(en ? '✅ Enabled!' : '🚫 Disabled!'); }
     };
 
