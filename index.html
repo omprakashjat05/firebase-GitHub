@@ -174,34 +174,6 @@
     [data-theme="starter-developer"] .bottom-nav { background: #0a0a0a; border-top: 1px solid #00ff41; }
     [data-theme="starter-developer"] .json-editor { background: #000; border: 1px solid #00ff41; }
 
-    /* ===== FIREBASE THEME (Orange Fire) ===== */
-    [data-theme="firebase"] {
-      --bg-primary: #1a1a2e;
-      --bg-secondary: #16213e;
-      --bg-card: #0f3460;
-      --bg-card-expired: linear-gradient(145deg, #4a1a1a 0%, #3a1010 100%);
-      --accent: #ff6b35;
-      --accent-hover: #f7931e;
-      --accent-light: rgba(255, 107, 53, 0.15);
-      --text-primary: #eee;
-      --text-secondary: #aaa;
-      --border: #ff6b35;
-      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-      --card-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
-      --card-radius: 12px;
-      --font-main: 'Poppins', sans-serif;
-    }
-
-    [data-theme="firebase"] .header h1 { color: #fff; }
-    [data-theme="firebase"] .device-card { 
-      border-left: 4px solid #ff6b35; 
-      background: linear-gradient(145deg, #0f3460 0%, #16213e 100%);
-      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.1);
-    }
-    [data-theme="firebase"] .device-id { color: #ff6b35; }
-    [data-theme="firebase"] .key-value { background: rgba(255,107,53,0.15); color: #ff6b35; }
-    [data-theme="firebase"] .stats-card { background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); border: 1px solid #ff6b35; }
-
     body { font-family: var(--font-main); background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; }
 
     .header {
@@ -212,10 +184,9 @@
     .header-logo { width: 22px; height: 22px; fill: white; }
     .firebase-logo { font-size: 20px; }
     .user-info { display: flex; align-items: center; gap: 8px; }
-    .user-details { text-align: right; display: none; }
-    @media (min-width: 400px) { .user-details { display: block; } }
-    .user-name { font-size: 11px; font-weight: 600; color: white; }
-    .user-username { font-size: 9px; color: rgba(255,255,255,0.7); }
+    .user-details { text-align: right; }
+    .user-name { font-size: 11px; font-weight: 600; color: white; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .user-email { font-size: 8px; color: rgba(255,255,255,0.7); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
     .header-btn { padding: 6px 12px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
 
@@ -224,27 +195,22 @@
     .card { background: var(--bg-card); border-radius: var(--card-radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
     .card h3 { font-size: 14px; margin-bottom: 12px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
 
-    .login-card { max-width: 400px; margin: 30px auto; }
-    .login-card ol { font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px 20px; line-height: 1.8; }
-    .login-card a { color: var(--accent); }
+    .login-card { max-width: 400px; margin: 30px auto; text-align: center; }
 
-    .info-box { background: var(--accent-light); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--accent); }
+    .info-box { background: var(--accent-light); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--accent); text-align: left; }
 
-    .input-group { margin-bottom: 12px; }
-    .input-group label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); }
-    .input-group input, .input-group textarea, .input-group select { 
-      width: 100%; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); 
-      color: var(--text-primary); border-radius: 8px; font-size: 13px; outline: none; font-family: var(--font-main);
+    .google-btn {
+      width: 100%; padding: 14px 20px; background: white; color: #333; border: 2px solid #ddd;
+      border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font-main);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      transition: all 0.2s; margin-top: 15px;
     }
-    .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--accent); }
-    .input-group textarea { min-height: 60px; resize: vertical; }
+    .google-btn:hover { border-color: #4285f4; box-shadow: 0 4px 15px rgba(66,133,244,0.2); }
+    .google-btn img { width: 20px; height: 20px; }
+    .google-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .login-btn {
-      width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-      color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font-main);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(255,107,53,0.3); }
+    .auth-error { background: rgba(231,76,60,0.15); color: var(--danger); padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; display: none; }
+    .auth-info { background: rgba(52,152,219,0.15); color: #3498db; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 11px; }
 
     .stats-card { display: flex; justify-content: space-around; background: var(--bg-card); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
     .stat-item { text-align: center; }
@@ -372,7 +338,6 @@
     .modal-row { display: flex; gap: 8px; }
     .modal-row .modal-input-group { flex: 1; }
 
-    .quick-btns { display: flex; gap: 5px; margin-top: 6px; }
     .quick-btn { flex: 1; padding: 8px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font-main); }
 
     .checkbox-label { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 12px; color: var(--text-primary); }
@@ -419,7 +384,6 @@
     .theme-starter-pro { background: linear-gradient(135deg, #ffc107, #ff9800); color: #111; }
     .theme-starter-max { background: linear-gradient(135deg, #00f5ff, #0080ff); color: #111; }
     .theme-starter-developer { background: linear-gradient(135deg, #00ff41, #00aa2a); color: #111; }
-    .theme-firebase { background: linear-gradient(135deg, #ff6b35, #1a1a2e); color: white; }
 
     /* Warning messages */
     .warning-msg { background: rgba(231,76,60,0.15); color: var(--danger); padding: 8px 12px; border-radius: 6px; font-size: 11px; margin-top: 6px; display: none; }
@@ -463,6 +427,19 @@
     .connection-status.connected .connection-dot { background: var(--success); animation: pulse 2s infinite; }
     .connection-status.disconnected .connection-dot { background: var(--danger); }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* Verified badge */
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(39,174,96,0.15);
+      color: var(--success);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 9px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body data-theme="starter">
@@ -473,10 +450,11 @@
       Firebase Admin Panel
     </h1>
     <div class="user-info" id="userInfo" style="display:none;">
-      <div class="connection-status connected" id="connectionStatus">
-        <span class="connection-dot"></span>
-        <span>Connected</span>
+      <div class="user-details">
+        <div class="user-name" id="userName"></div>
+        <div class="user-email" id="userEmail"></div>
       </div>
+      <img class="user-avatar" id="userAvatar" src="" alt="">
       <button class="header-btn" id="logoutBtn">Logout</button>
     </div>
   </div>
@@ -484,12 +462,27 @@
   <div class="container">
     <div id="loginSection">
       <div class="card login-card">
-        <h3>🔥 Firebase Connection</h3>
+        <h3>🔥 Firebase Admin Login</h3>
         <div class="info-box">
-          <p style="margin:0;font-size:11px;"><strong>✅ Auto-Connected to Firebase</strong></p>
-          <p style="margin:5px 0 0;font-size:10px;color:var(--text-secondary);">Database: opjat-2005</p>
+          <p style="margin:0;font-size:11px;"><strong>🔐 Authorized Access Only</strong></p>
+          <p style="margin:5px 0 0;font-size:10px;color:var(--text-secondary);">
+            Only <strong>www.webomprakashjat@gmail.com</strong> can access this panel.
+          </p>
         </div>
-        <button class="login-btn" id="connectBtn">🚀 Connect to Firebase</button>
+        
+        <div class="auth-info">
+          <strong>📋 Login Process:</strong><br>
+          1. Click "Sign in with Google"<br>
+          2. Select your authorized Google account<br>
+          3. Access granted automatically
+        </div>
+
+        <button class="google-btn" id="googleLoginBtn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+          Sign in with Google
+        </button>
+
+        <div class="auth-error" id="authError"></div>
       </div>
     </div>
 
@@ -675,6 +668,7 @@
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
   <script>
@@ -689,8 +683,16 @@
       appId: "1:2500552965:web:4f6664a366967a2525af6c"
     };
 
+    // Authorized Email
+    const AUTHORIZED_EMAIL = "www.webomprakashjat@gmail.com";
+
     // Initialize Firebase
-    let app, database;
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    let currentUser = null;
     let currentCollection = 'Camera';
     let currentData = [];
     let allDataArray = [];
@@ -702,6 +704,16 @@
       t.textContent = msg; 
       t.classList.add('show'); 
       setTimeout(() => t.classList.remove('show'), 2000); 
+    }
+
+    function showAuthError(msg) {
+      const el = document.getElementById('authError');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function hideAuthError() {
+      document.getElementById('authError').style.display = 'none';
     }
 
     function isExpired(dateStr) {
@@ -822,68 +834,88 @@
       document.getElementById(`nav${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
     }
 
-    // Firebase Functions
-    async function connectToFirebase() {
+    // Google Sign In
+    async function signInWithGoogle() {
+      const btn = document.getElementById('googleLoginBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Signing in...';
+      hideAuthError();
+
       try {
-        document.getElementById('connectBtn').innerHTML = '<span class="spinner"></span> Connecting...';
-        document.getElementById('connectBtn').disabled = true;
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
 
-        app = firebase.initializeApp(firebaseConfig);
-        database = firebase.database();
+        // Check if email is authorized
+        if (user.email !== AUTHORIZED_EMAIL) {
+          await auth.signOut();
+          showAuthError(`❌ Access Denied! Only ${AUTHORIZED_EMAIL} is authorized.`);
+          btn.disabled = false;
+          btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Sign in with Google';
+          return;
+        }
 
-        // Test connection
-        const testRef = database.ref('.info/connected');
-        testRef.on('value', (snapshot) => {
-          if (snapshot.val() === true) {
-            document.getElementById('connectionStatus').className = 'connection-status connected';
-            document.getElementById('connectionStatus').innerHTML = '<span class="connection-dot"></span><span>Connected</span>';
-          } else {
-            document.getElementById('connectionStatus').className = 'connection-status disconnected';
-            document.getElementById('connectionStatus').innerHTML = '<span class="connection-dot"></span><span>Disconnected</span>';
-          }
-        });
-
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('mainPanel').style.display = 'block';
-        document.getElementById('bottomNav').style.display = 'flex';
-        document.getElementById('userInfo').style.display = 'flex';
-
-        // Load default collection
-        await loadCollectionData();
-        showToast('🔥 Firebase Connected!');
+        // Authorized user
+        currentUser = user;
+        showMainPanel();
+        showToast('✅ Login successful!');
 
       } catch (error) {
-        console.error('Firebase connection error:', error);
-        alert('❌ Connection failed: ' + error.message);
-        document.getElementById('connectBtn').innerHTML = '🚀 Connect to Firebase';
-        document.getElementById('connectBtn').disabled = false;
+        console.error('Login error:', error);
+        showAuthError('❌ Login failed: ' + error.message);
+        btn.disabled = false;
+        btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Sign in with Google';
       }
     }
 
+    function showMainPanel() {
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('mainPanel').style.display = 'block';
+      document.getElementById('bottomNav').style.display = 'flex';
+      document.getElementById('userInfo').style.display = 'flex';
+
+      // Set user info
+      document.getElementById('userName').textContent = currentUser.displayName || 'Admin';
+      document.getElementById('userEmail').textContent = currentUser.email;
+      document.getElementById('userAvatar').src = currentUser.photoURL || 'https://via.placeholder.com/32';
+
+      // Load data
+      loadCollectionData();
+    }
+
+    async function signOut() {
+      if (confirm('Logout from Firebase?')) {
+        await auth.signOut();
+        currentUser = null;
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('mainPanel').style.display = 'none';
+        document.getElementById('bottomNav').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'none';
+        showToast('👋 Logged out!');
+      }
+    }
+
+    // Check auth state on load
+    auth.onAuthStateChanged((user) => {
+      if (user && user.email === AUTHORIZED_EMAIL) {
+        currentUser = user;
+        showMainPanel();
+      }
+    });
+
+    // Firebase Database Functions
     async function loadCollectionData() {
       try {
         document.getElementById('firebaseStatus').innerHTML = '🔄 Loading...';
         
         const collectionRef = database.ref(currentCollection);
-        const snapshot = await collectionRef.once('value');
-        const data = snapshot.val();
-
-        if (data && Array.isArray(data)) {
-          currentData = data.filter(item => item !== null);
-        } else if (data && typeof data === 'object') {
-          currentData = Object.keys(data).map(k => ({ id: k, ...data[k] }));
-        } else {
-          currentData = [];
-        }
-
-        allDataArray = currentData;
-        displayData();
-        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-        document.getElementById('firebaseStatus').innerHTML = '✅ Loaded';
-
+        
+        // Remove previous listener
+        collectionRef.off();
+        
         // Set up realtime listener
         collectionRef.on('value', (snapshot) => {
           const data = snapshot.val();
+          
           if (data && Array.isArray(data)) {
             currentData = data.filter(item => item !== null);
           } else if (data && typeof data === 'object') {
@@ -891,9 +923,15 @@
           } else {
             currentData = [];
           }
+          
           allDataArray = currentData;
           displayData();
           document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+          document.getElementById('firebaseStatus').innerHTML = '✅ Connected';
+        }, (error) => {
+          console.error('Database error:', error);
+          document.getElementById('firebaseStatus').innerHTML = '❌ Error';
+          showToast('❌ Database error!');
         });
 
       } catch (error) {
@@ -1073,13 +1111,8 @@
     }
 
     // Event Listeners
-    document.getElementById('connectBtn').addEventListener('click', connectToFirebase);
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (confirm('Logout?')) {
-        location.reload();
-      }
-    });
+    document.getElementById('googleLoginBtn').addEventListener('click', signInWithGoogle);
+    document.getElementById('logoutBtn').addEventListener('click', signOut);
 
     // Collection selector
     document.querySelectorAll('.collection-btn').forEach(btn => {
