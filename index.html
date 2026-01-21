@@ -1,971 +1,1276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=700, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
-<title>🔥 Admin Panel - Firebase + GitHub JSON Editor</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🔥 Firebase Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<style>
-  /* Basic styles - similar theme to original panel */
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #0a0a0a;
-    color: #f5f5f5;
-    min-height: 100vh;
-    margin: 0; padding: 0;
-  }
-  header {
-    background: #1e1e1e;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #333;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  header h1 {
-    color: #ffc107;
-    font-size: 1.5em;
-  }
-  main {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
-  }
-  .card {
-    background: #1e1e1e;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 30px;
-    border: 1px solid #333;
-  }
-  h3 {
-    color: #ffc107;
-    margin-bottom: 15px;
-  }
-  .input-group {
-    margin: 12px 0;
-  }
-  label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    display: block;
-  }
-  input[type="text"],
-  input[type="password"],
-  textarea,
-  select {
-    width: 100%;
-    background: #2d2d2d;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 12px;
-    color: #f5f5f5;
-    font-size: 14px;
-    outline: none;
-    font-family: 'Courier New', monospace;
-    resize: vertical;
-  }
-  textarea {
-    min-height: 300px;
-    font-family: 'Courier New', monospace;
-  }
-  button {
-    padding: 14px 25px;
-    background: #ffc107;
-    border: none;
-    border-radius: 8px;
-    color: #111;
-    font-weight: 700;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: #ffb300;
-  }
-  .login-section {
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-  .login-card {
-    background: #252525;
-    border-radius: 12px;
-    padding: 25px;
-    width: 100%;
-    max-width: 430px;
-  }
-  .login-card h4 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #ffc107;
-  }
-  .divider {
-    text-align: center;
-    color: #aaa;
-    margin: 30px 0;
-    position: relative;
-  }
-  .divider::before, .divider::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 45%;
-    height: 1px;
-    background: #333;
-  }
-  .divider::before { left: 0; }
-  .divider::after { right: 0; }
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #ffc107;
-  }
-  .user-details {
-    text-align: right;
-  }
-  .user-name {
-    font-weight: 600;
-    color: #ffc107;
-  }
-  .user-email {
-    font-size: 0.85em;
-    color: #aaa;
-  }
-  .logout-btn {
-    background: #e53935;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .logout-btn:hover {
-    background: #b71c1c;
-  }
-  .tab {
-    display: inline-block;
-    padding: 10px 18px;
-    cursor: pointer;
-    background: #2d2d2d;
-    margin-right: 8px;
-    color: #aaa;
-    border-radius: 8px 8px 0 0;
-    font-weight: 600;
-  }
-  .tab.active {
-    background: #ffc107;
-    color: #111;
-  }
-  .tab-content {
-    display: none;
-    background: #252525;
-    border: 1px solid #333;
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-    padding: 20px;
-  }
-  .tab-content.active {
-    display: block;
-  }
-  .empty-state {
-    text-align: center;
-    color: #666;
-    margin-top: 30px;
-  }
-  .repo-list,
-  .repo-list div {
-    cursor: pointer;
-  }
-  .repo-list div:hover,
-  .repo-list .active {
-    color: #ffc107;
-  }
-  .status-bar {
-    margin-bottom: 15px;
-    color: #aaa;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .fab {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #ffc107;
-    border-radius: 50%;
-    border: none;
-    padding: 0;
-    font-size: 36px;
-    width: 64px;
-    height: 64px;
-    box-shadow: 0 6px 20px rgba(255,193,7,0.6);
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #111;
-  }
-  .fab:hover {
-    background: #ffb300;
-  }
-</style>
+    :root {
+      --bg-primary: #f5e6d3;
+      --bg-secondary: #e8d5c4;
+      --bg-card: #fff9f0;
+      --bg-card-expired: linear-gradient(145deg, #ffe5e5 0%, #ffd6d6 100%);
+      --bg-input: #ffffff;
+      --accent: #ff6b35;
+      --accent-hover: #e55a2b;
+      --accent-light: rgba(255, 107, 53, 0.15);
+      --text-primary: #333;
+      --text-secondary: #666;
+      --border: #d4c4b0;
+      --success: #27ae60;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+      --card-radius: 12px;
+      --font-main: 'Poppins', sans-serif;
+      --font-mono: 'Courier New', monospace;
+      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      --card-border: 4px solid var(--accent);
+      --expired-border: 4px solid var(--danger);
+    }
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    /* ===== STARTER THEME (Warm Cream + Firebase Orange) ===== */
+    [data-theme="starter"] {
+      --bg-primary: #f5e6d3;
+      --bg-secondary: #e8d5c4;
+      --bg-card: #fff9f0;
+      --accent: #ff6b35;
+      --accent-hover: #e55a2b;
+      --border: #d4c4b0;
+      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      --card-radius: 12px;
+      --font-main: 'Poppins', sans-serif;
+    }
 
+    /* ===== STARTER PRO THEME (Dark Gold) ===== */
+    [data-theme="starter-pro"] {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #0d0d0d;
+      --bg-card: #252525;
+      --bg-card-expired: linear-gradient(145deg, #3d1a1a 0%, #2d1515 100%);
+      --accent: #ffc107;
+      --accent-hover: #ffb300;
+      --accent-light: rgba(255, 193, 7, 0.15);
+      --text-primary: #f5f5f5;
+      --text-secondary: #aaa;
+      --border: #333;
+      --header-bg: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      --card-shadow: 0 4px 15px rgba(255, 193, 7, 0.1);
+      --card-radius: 10px;
+      --font-main: 'Poppins', sans-serif;
+    }
+
+    [data-theme="starter-pro"] .header h1 { color: #111; }
+    [data-theme="starter-pro"] .header-logo { fill: #111; }
+    [data-theme="starter-pro"] .header-btn { background: #111; color: #ffc107; }
+    [data-theme="starter-pro"] .user-name { color: #111; }
+    [data-theme="starter-pro"] .user-username { color: #333; }
+    [data-theme="starter-pro"] .device-card { border-left: 4px solid #ffc107; background: linear-gradient(145deg, #252525 0%, #1f1f1f 100%); }
+    [data-theme="starter-pro"] .device-id { color: #ffc107; }
+    [data-theme="starter-pro"] .key-value { background: rgba(255,193,7,0.15); color: #ffc107; }
+    [data-theme="starter-pro"] .json-editor { background: #0a0a0a; border-color: #ffc107; }
+
+    /* ===== STARTER MAX THEME (Neon Cyber) ===== */
+    [data-theme="starter-max"] {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #050810;
+      --bg-card: #0d1220;
+      --bg-card-expired: linear-gradient(145deg, #2a1a2a 0%, #1a1020 100%);
+      --accent: #00f5ff;
+      --accent-hover: #00d4e0;
+      --accent-light: rgba(0, 245, 255, 0.1);
+      --text-primary: #e0f7ff;
+      --text-secondary: #7fdbff;
+      --border: #1a3a4a;
+      --header-bg: linear-gradient(135deg, #0d1220 0%, #1a2a3a 100%);
+      --card-shadow: 0 0 20px rgba(0, 245, 255, 0.15);
+      --card-radius: 5px;
+      --font-main: 'Orbitron', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    [data-theme="starter-max"] body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: 
+        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px),
+        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    [data-theme="starter-max"] .header { border-bottom: 2px solid #00f5ff; box-shadow: 0 0 30px rgba(0,245,255,0.2); }
+    [data-theme="starter-max"] .device-card { 
+      border: 1px solid #00f5ff; 
+      border-left: 4px solid #00f5ff;
+      box-shadow: 0 0 15px rgba(0,245,255,0.1), inset 0 0 20px rgba(0,245,255,0.03);
+      background: linear-gradient(145deg, #0d1220 0%, #0a0e18 100%);
+    }
+    [data-theme="starter-max"] .device-card.expired { border-color: #ff0080; box-shadow: 0 0 15px rgba(255,0,128,0.2); }
+    [data-theme="starter-max"] .device-id { color: #00f5ff; text-shadow: 0 0 10px rgba(0,245,255,0.5); }
+    [data-theme="starter-max"] .key-value { background: rgba(0,245,255,0.1); color: #00f5ff; border: 1px solid rgba(0,245,255,0.3); }
+    [data-theme="starter-max"] .stats-card { background: linear-gradient(135deg, #0d1220 0%, #1a2a3a 100%); border: 1px solid #00f5ff; box-shadow: 0 0 25px rgba(0,245,255,0.2); }
+    [data-theme="starter-max"] .expired-badge { background: #ff0080; box-shadow: 0 0 10px rgba(255,0,128,0.5); }
+    [data-theme="starter-max"] .json-editor { background: #050810; border: 1px solid #00f5ff; color: #00f5ff; }
+    [data-theme="starter-max"] .sub-tabs, [data-theme="starter-max"] .filter-tab, [data-theme="starter-max"] .search-bar { border: 1px solid #1a3a4a; }
+    [data-theme="starter-max"] .sub-tab.active { background: #00f5ff; color: #0a0e1a; }
+
+    /* ===== STARTER DEVELOPER THEME (Matrix Green) ===== */
+    [data-theme="starter-developer"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #050505;
+      --bg-card: #0f0f0f;
+      --bg-card-expired: linear-gradient(145deg, #1a0a0a 0%, #150505 100%);
+      --accent: #00ff41;
+      --accent-hover: #00cc33;
+      --accent-light: rgba(0, 255, 65, 0.1);
+      --text-primary: #00ff41;
+      --text-secondary: #00aa2a;
+      --border: #00ff41;
+      --header-bg: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
+      --card-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+      --card-radius: 0px;
+      --font-main: 'Share Tech Mono', monospace;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    [data-theme="starter-developer"] body::before {
+      content: ">";
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      color: #00ff41;
+      font-family: 'Share Tech Mono', monospace;
+      animation: blink 1s infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+    [data-theme="starter-developer"] .header { border-bottom: 1px solid #00ff41; }
+    [data-theme="starter-developer"] .device-card { 
+      border: 1px solid #00ff41; 
+      border-left: 3px solid #00ff41;
+      background: #0a0a0a;
+    }
+    [data-theme="starter-developer"] .device-card.expired { border-color: #ff0000; }
+    [data-theme="starter-developer"] .device-id { color: #00ff41; }
+    [data-theme="starter-developer"] .user-name-card, [data-theme="starter-developer"] .expiry-text { color: #00aa2a; }
+    [data-theme="starter-developer"] .key-value { background: #050505; color: #00ff41; border: 1px solid #00ff41; }
+    [data-theme="starter-developer"] .stats-card { background: #0a0a0a; border: 1px solid #00ff41; }
+    [data-theme="starter-developer"] .expired-badge { background: #ff0000; }
+    [data-theme="starter-developer"] .sub-tabs, [data-theme="starter-developer"] .search-bar, [data-theme="starter-developer"] .filter-tab { 
+      background: #0a0a0a; border: 1px solid #00ff41; 
+    }
+    [data-theme="starter-developer"] .sub-tab.active, [data-theme="starter-developer"] .filter-tab.active { background: #00ff41; color: #0a0a0a; }
+    [data-theme="starter-developer"] .fab-button { background: #00ff41; }
+    [data-theme="starter-developer"] .fab-button svg { color: #0a0a0a; }
+    [data-theme="starter-developer"] .bottom-nav { background: #0a0a0a; border-top: 1px solid #00ff41; }
+    [data-theme="starter-developer"] .json-editor { background: #000; border: 1px solid #00ff41; }
+
+    /* ===== FIREBASE THEME (Orange Fire) ===== */
+    [data-theme="firebase"] {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-card: #0f3460;
+      --bg-card-expired: linear-gradient(145deg, #4a1a1a 0%, #3a1010 100%);
+      --accent: #ff6b35;
+      --accent-hover: #f7931e;
+      --accent-light: rgba(255, 107, 53, 0.15);
+      --text-primary: #eee;
+      --text-secondary: #aaa;
+      --border: #ff6b35;
+      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      --card-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
+      --card-radius: 12px;
+      --font-main: 'Poppins', sans-serif;
+    }
+
+    [data-theme="firebase"] .header h1 { color: #fff; }
+    [data-theme="firebase"] .device-card { 
+      border-left: 4px solid #ff6b35; 
+      background: linear-gradient(145deg, #0f3460 0%, #16213e 100%);
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.1);
+    }
+    [data-theme="firebase"] .device-id { color: #ff6b35; }
+    [data-theme="firebase"] .key-value { background: rgba(255,107,53,0.15); color: #ff6b35; }
+    [data-theme="firebase"] .stats-card { background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); border: 1px solid #ff6b35; }
+
+    body { font-family: var(--font-main); background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; }
+
+    .header {
+      background: var(--header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header h1 { font-size: 15px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; }
+    .header-logo { width: 22px; height: 22px; fill: white; }
+    .firebase-logo { font-size: 20px; }
+    .user-info { display: flex; align-items: center; gap: 8px; }
+    .user-details { text-align: right; display: none; }
+    @media (min-width: 400px) { .user-details { display: block; } }
+    .user-name { font-size: 11px; font-weight: 600; color: white; }
+    .user-username { font-size: 9px; color: rgba(255,255,255,0.7); }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
+    .header-btn { padding: 6px 12px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 12px; }
+
+    .card { background: var(--bg-card); border-radius: var(--card-radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
+    .card h3 { font-size: 14px; margin-bottom: 12px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+
+    .login-card { max-width: 400px; margin: 30px auto; }
+    .login-card ol { font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px 20px; line-height: 1.8; }
+    .login-card a { color: var(--accent); }
+
+    .info-box { background: var(--accent-light); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--accent); }
+
+    .input-group { margin-bottom: 12px; }
+    .input-group label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); }
+    .input-group input, .input-group textarea, .input-group select { 
+      width: 100%; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); 
+      color: var(--text-primary); border-radius: 8px; font-size: 13px; outline: none; font-family: var(--font-main);
+    }
+    .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--accent); }
+    .input-group textarea { min-height: 60px; resize: vertical; }
+
+    .login-btn {
+      width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font-main);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(255,107,53,0.3); }
+
+    .stats-card { display: flex; justify-content: space-around; background: var(--bg-card); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
+    .stat-item { text-align: center; }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+
+    .sub-tabs { display: flex; background: var(--bg-secondary); border-radius: 10px; padding: 4px; margin-bottom: 12px; }
+    .sub-tab { flex: 1; padding: 10px; background: none; border: none; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; font-family: var(--font-main); }
+    .sub-tab.active { background: var(--accent); color: white; }
+
+    .search-bar { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
+    .search-bar svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .search-bar input { flex: 1; background: none; border: none; color: var(--text-primary); font-size: 13px; outline: none; font-family: var(--font-main); }
+
+    .filter-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .filter-tab { padding: 6px 12px; background: var(--bg-card); border: none; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 15px; font-family: var(--font-main); }
+    .filter-tab.active { background: var(--accent); color: white; }
+
+    /* Collection Selector */
+    .collection-selector { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .collection-btn { 
+      padding: 8px 16px; 
+      background: var(--bg-card); 
+      border: 2px solid var(--border); 
+      color: var(--text-secondary); 
+      font-size: 12px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      border-radius: 20px; 
+      font-family: var(--font-main);
+      transition: all 0.2s;
+    }
+    .collection-btn.active { 
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); 
+      color: white; 
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+    }
+    .collection-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    .section-title { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+
+    .device-grid { display: grid; gap: 10px; }
+
+    .device-card {
+      background: var(--bg-card); border-radius: var(--card-radius); padding: 12px; position: relative;
+      border-left: var(--card-border); box-shadow: var(--card-shadow); transition: transform 0.2s;
+    }
+    .device-card:hover { transform: translateX(3px); }
+    .device-card.expired { background: var(--bg-card-expired); border-left: var(--expired-border); }
+    .device-card.highlight { animation: pulseHighlight 0.5s ease 3; }
+    @keyframes pulseHighlight { 0%, 100% { box-shadow: var(--card-shadow); } 50% { box-shadow: 0 0 20px var(--accent); } }
+
+    .position-tag { position: absolute; top: 8px; right: 8px; background: var(--accent); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+    .device-id { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 4px; word-break: break-all; font-family: var(--font-mono); }
+    .user-name-card { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .key-value { font-size: 12px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; word-break: break-all; }
+
+    .meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+    .expiry-text { color: var(--text-secondary); }
+    .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+    .status-badge.online { background: rgba(39,174,96,0.15); color: var(--success); }
+    .status-badge.offline { background: rgba(231,76,60,0.15); color: var(--danger); }
+
+    .expired-badge { position: absolute; bottom: 8px; right: 8px; background: var(--danger); color: white; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 10px; }
+
+    .card-actions { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .action-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .action-btn svg { width: 16px; height: 16px; }
+    .action-btn.edit { background: rgba(52,152,219,0.15); color: #3498db; }
+    .action-btn.delete { background: rgba(231,76,60,0.15); color: var(--danger); }
+    .action-btn.disable { background: rgba(243,156,18,0.15); color: var(--warning); }
+    .action-btn:hover { transform: scale(1.05); }
+
+    .json-editor { width: 100%; min-height: 300px; background: var(--bg-secondary); border: 2px solid var(--border); border-radius: 8px; padding: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); resize: vertical; }
+    .json-buttons { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .json-buttons button { flex: 1; min-width: 70px; padding: 10px; border: none; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
+    .json-buttons .save { background: var(--success); color: white; }
+    .json-buttons .format { background: #3498db; color: white; }
+    .json-buttons .copy { background: #9b59b6; color: white; }
+    .json-buttons .reset { background: #95a5a6; color: white; }
+
+    .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; }
+    .status { font-size: 11px; color: var(--text-secondary); }
+    .actions { display: flex; gap: 6px; }
+    .actions button { padding: 6px 10px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card);
+      display: flex; justify-content: space-around; align-items: center; padding: 8px 0 12px; border-top: 1px solid var(--border); z-index: 99;
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-secondary); font-size: 10px; cursor: pointer; padding: 4px 12px; }
+    .nav-item.active { color: var(--accent); }
+    .nav-item svg { width: 22px; height: 22px; margin-bottom: 2px; }
+
+    .fab-button {
+      width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; margin-top: -25px; border: none;
+      transition: all 0.3s ease;
+    }
+    .fab-button svg { width: 24px; height: 24px; color: white; }
+
+    #topBtn {
+      position: fixed; right: 12px; bottom: 85px; width: 40px; height: 40px; border-radius: 50%;
+      background: var(--bg-card); border: 2px solid var(--border); color: var(--accent); font-size: 18px;
+      display: none; align-items: center; justify-content: center; z-index: 98; cursor: pointer;
+    }
+
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+      display: none; align-items: flex-start; justify-content: center; padding: 12vh 10px 20px; z-index: 10000; overflow-y: auto;
+    }
+    .modal-bg.show { display: flex; }
+    .modal-box { width: 100%; max-width: 420px; background: var(--bg-card); border-radius: 16px; overflow: visible; }
+    .modal-header { padding: 14px 16px; background: var(--header-bg); display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0; }
+    .modal-title { font-size: 14px; font-weight: 600; color: white; }
+    .modal-close { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 16px; cursor: pointer; }
+    .modal-body { padding: 16px; background: var(--bg-card); border-radius: 0 0 16px 16px; }
+
+    .modal-input-group { margin-bottom: 12px; }
+    .modal-input-group label { display: block; color: var(--accent); font-weight: 600; margin-bottom: 5px; font-size: 11px; }
+    .modal-input { width: 100%; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); color: var(--text-primary); border-radius: 8px; font-size: 13px; outline: none; font-family: var(--font-main); }
+    .modal-input:focus { border-color: var(--accent); }
+    .modal-row { display: flex; gap: 8px; }
+    .modal-row .modal-input-group { flex: 1; }
+
+    .quick-btns { display: flex; gap: 5px; margin-top: 6px; }
+    .quick-btn { flex: 1; padding: 8px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font-main); }
+
+    .checkbox-label { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 12px; color: var(--text-primary); }
+    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+
+    .modal-buttons { display: flex; gap: 8px; margin-top: 12px; }
+    .modal-save-btn { flex: 1; padding: 12px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-main); }
+    .modal-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .modal-cancel-btn { padding: 12px 16px; background: #666; color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
+
+    .spinner { width: 14px; height: 14px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 500; opacity: 0; transition: transform 0.3s, opacity 0.3s; z-index: 10001; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .empty-state { text-align: center; padding: 40px 15px; color: var(--text-secondary); grid-column: 1 / -1; }
+    .empty-state p { font-size: 13px; margin-bottom: 12px; }
+    .empty-state button { padding: 12px 24px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); border: none; border-radius: 25px; font-weight: 700; color: white; cursor: pointer; font-family: var(--font-main); font-size: 13px; }
+
+    .suggestions { 
+      position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-input); border: 2px solid var(--accent); 
+      border-radius: 8px; max-height: 150px; overflow-y: auto; z-index: 1000; display: none; margin-top: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .suggestions.show { display: block; }
+    .suggestion-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-primary); transition: background 0.2s; }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover { background: var(--accent-light); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Theme Selector */
+    .theme-selector { margin-top: 15px; }
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+    .theme-option {
+      padding: 12px 10px; border-radius: 10px; cursor: pointer; text-align: center; font-size: 11px; font-weight: 600;
+      border: 2px solid transparent; transition: all 0.2s;
+    }
+    .theme-option:hover { transform: scale(1.02); }
+    .theme-option.active { border-color: white; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+    .theme-starter { background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; }
+    .theme-starter-pro { background: linear-gradient(135deg, #ffc107, #ff9800); color: #111; }
+    .theme-starter-max { background: linear-gradient(135deg, #00f5ff, #0080ff); color: #111; }
+    .theme-starter-developer { background: linear-gradient(135deg, #00ff41, #00aa2a); color: #111; }
+    .theme-firebase { background: linear-gradient(135deg, #ff6b35, #1a1a2e); color: white; }
+
+    /* Warning messages */
+    .warning-msg { background: rgba(231,76,60,0.15); color: var(--danger); padding: 8px 12px; border-radius: 6px; font-size: 11px; margin-top: 6px; display: none; }
+
+    /* Modal positioning fix */
+    #keyModal.modal-bg { padding: 6vh 16px 20px; }
+    #keyModal .modal-body { padding: 16px 20px; }
+    #keyModal .modal-input-group { margin-bottom: 14px; }
+    #keyModal .modal-row { display: flex; gap: 12px; }
+    #keyModal .modal-row .modal-input-group { flex: 1; }
+    #keyModal .expiry-inline { display: flex; align-items: center; gap: 8px; }
+    #keyModal .expiry-inline .modal-input { flex: 2.2; }
+    #keyModal .expiry-inline .quick-btn { flex: 1; height: 42px; }
+    #keyModal label.checkbox-label, #keyModal label.inline-checkbox { display: flex; align-items: center; justify-content: flex-start; height: 42px; padding: 0 12px; gap: 10px; box-sizing: border-box; }
+    #keyModal label.checkbox-label input[type="checkbox"] { margin: 0; align-self: center; }
+    #keyModal .modal-buttons { display: flex; gap: 12px; margin-top: 16px; }
+    #keyModal .modal-save-btn { flex: 2; height: 46px; }
+    #keyModal .modal-cancel-btn { flex: 1; height: 46px; }
+    #keyModal .modal-box { width: 100%; max-width: 420px; margin: 0 auto; }
+    #keyModal.modal-bg { padding-top: 6vh !important; padding-left: 30px !important; padding-right: 30px !important; padding-bottom: 20px !important; }
+    #keyModal .modal-body { padding: 12px 18px !important; }
+    #keyModal .modal-input-group { margin-bottom: 10px !important; }
+    #keyModal .modal-input { padding: 8px 10px !important; font-size: 12px !important; }
+    #keyModal .expiry-inline .quick-btn, #keyModal .modal-save-btn, #keyModal .modal-cancel-btn { height: 38px !important; }
+    #keyModal label.checkbox-label { height: 38px !important; padding: 0 10px !important; }
+    #keyModal .modal-buttons { margin-top: 10px !important; }
+
+    /* Connection status */
+    .connection-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .connection-status.connected { background: rgba(39,174,96,0.15); color: var(--success); }
+    .connection-status.disconnected { background: rgba(231,76,60,0.15); color: var(--danger); }
+    .connection-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .connection-status.connected .connection-dot { background: var(--success); animation: pulse 2s infinite; }
+    .connection-status.disconnected .connection-dot { background: var(--danger); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  </style>
 </head>
+<body data-theme="starter">
 
-<body>
-  <header>
-    <h1>🔥 Admin Panel</h1>
+  <div class="header">
+    <h1>
+      <span class="firebase-logo">🔥</span>
+      Firebase Admin Panel
+    </h1>
     <div class="user-info" id="userInfo" style="display:none;">
-      <div class="user-details">
-        <div class="user-name" id="userName"></div>
-        <div class="user-email" id="userEmail"></div>
+      <div class="connection-status connected" id="connectionStatus">
+        <span class="connection-dot"></span>
+        <span>Connected</span>
       </div>
-      <img class="user-avatar" id="userAvatar" src="" alt="Avatar" />
-      <button class="logout-btn" id="logoutBtn">🚪 Logout</button>
+      <button class="header-btn" id="logoutBtn">Logout</button>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <!-- Login Section -->
-    <section id="loginSection" class="card">
-      <h3>🔐 Choose Login Method</h3>
-      <div class="login-section">
-        <!-- Firebase Google Login -->
-        <div class="login-card">
-          <h4>🔥 Firebase Google Login</h4>
-          <button id="firebaseGoogleBtn" style="background:#4285f4;color:#fff;padding:14px;font-weight:700;border-radius:8px;cursor:pointer;width:100%;">🌐 Login with Google</button>
-          <p style="margin-top:16px; font-size: 0.9em; color:#aaa;">
-            Only users with authorized email <b>www.webomprakashjat@gmail.com</b> can save.
-          </p>
+  <div class="container">
+    <div id="loginSection">
+      <div class="card login-card">
+        <h3>🔥 Firebase Connection</h3>
+        <div class="info-box">
+          <p style="margin:0;font-size:11px;"><strong>✅ Auto-Connected to Firebase</strong></p>
+          <p style="margin:5px 0 0;font-size:10px;color:var(--text-secondary);">Database: opjat-2005</p>
+        </div>
+        <button class="login-btn" id="connectBtn">🚀 Connect to Firebase</button>
+      </div>
+    </div>
+
+    <div id="mainPanel" style="display:none;">
+      <div class="tab-content active" id="tab-devices">
+        <!-- Collection Selector -->
+        <div class="section-title">📁 Select Collection</div>
+        <div class="collection-selector" id="collectionSelector">
+          <button class="collection-btn active" data-collection="Camera">📷 Camera</button>
+          <button class="collection-btn" data-collection="Gallery">🖼️ Gallery</button>
+          <button class="collection-btn" data-collection="KycRndm">🔐 KycRndm</button>
         </div>
 
-        <!-- Divider -->
-        <div style="align-self:center; color:#666; font-weight: bold; font-size: 24px;">OR</div>
+        <div class="stats-card">
+          <div class="stat-item"><div class="stat-value" id="totalCount">0</div><div class="stat-label">Total</div></div>
+          <div class="stat-item"><div class="stat-value" id="activeCount">0</div><div class="stat-label">Active</div></div>
+          <div class="stat-item"><div class="stat-value" id="expiredCount">0</div><div class="stat-label">Expired</div></div>
+        </div>
 
-        <!-- GitHub Token Login -->
-        <div class="login-card">
-          <h4>🐙 GitHub Token Login</h4>
-          <label>GitHub Personal Access Token (repo permission)</label>
-          <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxx" style="margin-bottom:12px;">
-          <button id="githubLoginBtn" style="background:#238636;color:#fff;padding:14px;font-weight:700;border-radius:8px;cursor:pointer;width:100%;">🐙 Connect GitHub</button>
-          <p style="margin-top:16px; font-size: 0.9em; color:#aaa;">
-            Generate token at <a href="https://github.com/settings/tokens" target="_blank" style="color:#ffc107;">GitHub tokens settings</a>.
-          </p>
+        <div class="sub-tabs">
+          <button class="sub-tab active" data-subtab="keys">🔑 Keys</button>
+          <button class="sub-tab" data-subtab="editor">📝 JSON</button>
+        </div>
+
+        <div class="tab-content active" id="subtab-keys">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search devices..." id="searchInput">
+          </div>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">📜 All</button>
+            <button class="filter-tab" data-filter="active">✅ Active</button>
+            <button class="filter-tab" data-filter="expired">⚠️ Expired</button>
+          </div>
+          <div class="section-title">Device Keys <span id="positionInfo" style="font-weight:normal;">(Total: 0 keys)</span></div>
+          <div id="dataList" class="device-grid"></div>
+        </div>
+
+        <div class="tab-content" id="subtab-editor">
+          <textarea class="json-editor" id="rawJsonEditor" placeholder="JSON data..."></textarea>
+          <div class="json-buttons">
+            <button class="save" id="updateFromJsonBtn">📤 Save</button>
+            <button class="format" id="formatJsonBtn">✨ Format</button>
+            <button class="copy" id="copyJsonBtn">📋 Copy</button>
+            <button class="reset" id="resetJsonBtn">🔄 Reset</button>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- Main Panel -->
-    <section id="mainPanel" class="card" style="display:none;">
-      <div class="status-bar" id="topStatus">⚡ Not connected</div>
-
-      <!-- Source info -->
-      <div style="margin-bottom: 16px; color:#aaa;">
-        Data Source: <span id="dataSourceInfo" style="font-weight: 600;"></span>
-      </div>
-
-      <!-- GitHub repo and file selection -->
-      <div id="githubSection" style="display:none; margin-bottom: 24px;">
-        <h3>Select Repository</h3>
-        <div id="repoList" style="max-height:150px;overflow-y:auto; border: 1px solid #333; padding: 5px;"></div>
-        <h3 style="margin-top:20px;">Select JSON File</h3>
-        <select id="fileSelect" style="background:#2d2d2d; border:1px solid #333; padding:10px; color:#f5f5f5; width:100%; border-radius:8px;">
-          <option value="">-- Select a JSON file --</option>
-        </select>
-        <button id="loadGithubJsonBtn" style="margin-top: 12px; width: 100%;">Load JSON</button>
-      </div>
-
-      <!-- Firebase section description -->
-      <div id="firebaseSection" style="display:none; margin-bottom: 24px;">
-        <h3 style="color:#ffc107;">Firebase Realtime Database</h3>
-        <p>Editing JSON stored at root level of your Firebase Realtime Database (based on your setup).</p>
-        <p>Only editable by authorized Google user (<b>www.webomprakashjat@gmail.com</b>).</p>
-        <button id="loadFirebaseJsonBtn" style="width: 100%;">Load JSON from Firebase</button>
-      </div>
-
-      <!-- Tab buttons -->
-      <div style="margin-top: 12px;">
-        <span class="tab active" data-tab="keysTab">🔑 Keys View</span>
-        <span class="tab" data-tab="jsonTab">📝 Raw JSON Editor</span>
-      </div>
-
-      <!-- Keys View -->
-      <div id="keysTab" class="tab-content active" style="margin-top: 15px;">
-        <div id="keysListContainer" style="max-height: 480px; overflow-y: auto; border: 1px solid #333; border-radius: 8px; padding: 10px;"></div>
-        <button class="fab" id="addKeyBtn" title="Add New Key">+</button>
-      </div>
-
-      <!-- Raw JSON Editor -->
-      <div id="jsonTab" class="tab-content" style="margin-top: 15px;">
-        <textarea id="rawJsonEditor" placeholder="Loading JSON..." style="width: 100%; height: 400px; background:#2d2d2d; color:#f5f5f5; border-radius:8px; padding:15px; font-family: 'Courier New', monospace;"></textarea>
-        <div style="margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap;">
-          <button id="saveJsonBtn">💾 Save JSON</button>
-          <button id="formatJsonBtn">✨ Format JSON</button>
-          <button id="resetJsonBtn">🔄 Reset</button>
+      <div class="tab-content" id="tab-settings">
+        <div class="card">
+          <h3>🔥 Firebase Status</h3>
+          <div class="status-bar">
+            <div class="status" id="firebaseStatus">⚡ Connected</div>
+            <div class="actions">
+              <button id="refreshDataBtn">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="info-box" style="margin-top:10px;">
+            <p style="margin:0;font-size:11px;"><strong>Database URL:</strong></p>
+            <p style="margin:5px 0 0;font-size:10px;word-break:break-all;color:var(--text-secondary);">
+              https://opjat-2005-default-rtdb.asia-southeast1.firebasedatabase.app
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
 
-  <!-- Add/Edit Key Modal -->
-  <div id="keyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:2000;">
-    <div style="background:#1e1e1e; padding:25px; border-radius:12px; max-width:400px; width: 90%;">
-      <h3 style="color:#ffc107; margin-bottom:20px;" id="modalTitle">Add Key</h3>
-      <label>Device ID</label>
-      <input type="text" id="modalDeviceId" style="width:100%; padding:10px; margin-bottom:12px; background:#2d2d2d; border:1px solid #333; color:#f5f5f5; border-radius:8px;">
-        
-      <label>License Key</label>
-      <input type="text" id="modalKey" style="width:100%; padding:10px; margin-bottom:12px; background:#2d2d2d; border:1px solid #333; color:#f5f5f5; border-radius:8px;">
-
-      <label>Expiry Date (dd-mm-yyyy)</label>
-      <input type="text" id="modalExpiry" placeholder="dd-mm-yyyy" style="width:100%; padding:10px; margin-bottom:12px; background:#2d2d2d; border:1px solid #333; color:#f5f5f5; border-radius:8px;">
-
-      <label>User Name</label>
-      <input type="text" id="modalUserName" style="width:100%; padding:10px; margin-bottom:12px; background:#2d2d2d; border:1px solid #333; color:#f5f5f5; border-radius:8px;">
-
-      <label><input type="checkbox" id="modalAllowOffline" /> Allow Offline</label>
-
-      <div style="margin-top: 20px; display:flex; justify-content: space-between;">
-        <button id="modalSaveBtn" style="flex: 1; margin-right: 10px;">💾 Save</button>
-        <button id="modalCancelBtn" style="flex: 1; background:#e53935; color:white;">Cancel</button>
+        <div class="card theme-selector">
+          <h3>🎨 Select Theme</h3>
+          <div class="theme-grid">
+            <div class="theme-option theme-starter active" data-theme="starter">🔥 Firebase</div>
+            <div class="theme-option theme-starter-pro" data-theme="starter-pro">🌟 Pro Gold</div>
+            <div class="theme-option theme-starter-max" data-theme="starter-max">⚡ Cyber</div>
+            <div class="theme-option theme-starter-developer" data-theme="starter-developer">💻 Matrix</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  </main>
+  <div class="bottom-nav" id="bottomNav" style="display:none;">
+    <div class="nav-item active" id="navDevices" onclick="switchToTab('devices')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Devices
+    </div>
+    <button class="fab-button" onclick="openKeyModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <div class="nav-item" id="navSettings" onclick="switchToTab('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </div>
+  </div>
 
-<script>
-/** Global State Variables **/
-let currentProvider = null; // 'firebase' or 'github'
-let firebaseUser = null;
-let githubToken = null;
+  <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-let currentData = null;      // JSON data object/array loaded
-let githubRepos = [];        // GitHub repos list
-let githubSelectedRepo = null;
-let githubSelectedFile = null;
-let githubFileSha = null;
-
-////////////////////////////
-// --- Firebase Setup --- //
-////////////////////////////
-
-// Put your Firebase config here, replace placeholders:
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-
-//////////////////////////////
-// --- DOM Elements --- //
-//////////////////////////////
-
-const loginSection = document.getElementById('loginSection');
-const mainPanel = document.getElementById('mainPanel');
-const userInfo = document.getElementById('userInfo');
-const userNameDisplay = document.getElementById('userName');
-const userEmailDisplay = document.getElementById('userEmail');
-const userAvatarDisplay = document.getElementById('userAvatar');
-const logoutBtn = document.getElementById('logoutBtn');
-
-const firebaseGoogleBtn = document.getElementById('firebaseGoogleBtn');
-
-const githubTokenInput = document.getElementById('githubToken');
-const githubLoginBtn = document.getElementById('githubLoginBtn');
-const repoListDiv = document.getElementById('repoList');
-const fileSelectDropdown = document.getElementById('fileSelect');
-const loadGithubJsonBtn = document.getElementById('loadGithubJsonBtn');
-const githubSection = document.getElementById('githubSection');
-const firebaseSection = document.getElementById('firebaseSection');
-const topStatus = document.getElementById('topStatus');
-const dataSourceInfo = document.getElementById('dataSourceInfo');
-
-const keysTabBtn = document.querySelector('[data-tab="keysTab"]');
-const jsonTabBtn = document.querySelector('[data-tab="jsonTab"]');
-const keysTabContent = document.getElementById('keysTab');
-const jsonTabContent = document.getElementById('jsonTab');
-
-const rawJsonEditor = document.getElementById('rawJsonEditor');
-const saveJsonBtn = document.getElementById('saveJsonBtn');
-const formatJsonBtn = document.getElementById('formatJsonBtn');
-const resetJsonBtn = document.getElementById('resetJsonBtn');
-
-const keysListContainer = document.getElementById('keysListContainer');
-const addKeyBtn = document.getElementById('addKeyBtn');
-
-const keyModal = document.getElementById('keyModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalDeviceId = document.getElementById('modalDeviceId');
-const modalKey = document.getElementById('modalKey');
-const modalExpiry = document.getElementById('modalExpiry');
-const modalUserName = document.getElementById('modalUserName');
-const modalAllowOffline = document.getElementById('modalAllowOffline');
-const modalSaveBtn = document.getElementById('modalSaveBtn');
-const modalCancelBtn = document.getElementById('modalCancelBtn');
-
-//////////////////////////////
-// --- Helper Functions --- //
-//////////////////////////////
-
-function showStatus(msg, isError = false) {
-  topStatus.textContent = msg;
-  topStatus.style.color = isError ? '#e53935' : '#aaa';
-}
-
-function resetStatus() {
-  topStatus.textContent = '⚡ Ready';
-  topStatus.style.color = '#aaa';
-}
-
-function showSection(section) {
-  // Hide both disjoint sections
-  githubSection.style.display = 'none';
-  firebaseSection.style.display = 'none';
-
-  if (section === 'firebase') firebaseSection.style.display = 'block';
-  else if (section === 'github') githubSection.style.display = 'block';
-}
-
-function showUserInfo(user) {
-  userInfo.style.display = 'flex';
-  loginSection.style.display = 'none';
-  mainPanel.style.display = 'block';
-
-  // Show user data
-  userNameDisplay.textContent = user.displayName || user.email || user.login || 'User';
-  userEmailDisplay.textContent = user.email || ('@' + user.login || '');
-  userAvatarDisplay.src = user.photoURL || user.avatar_url || 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
-}
-
-function clearUserInfo() {
-  userInfo.style.display = 'none';
-  loginSection.style.display = 'block';
-  mainPanel.style.display = 'none';
-
-  userNameDisplay.textContent = '';
-  userEmailDisplay.textContent = '';
-  userAvatarDisplay.src = '';
-  resetStatus();
-}
-
-function base64Decode(s) {
-  return decodeURIComponent(escape(atob(s)));
-}
-
-function base64Encode(s) {
-  return btoa(unescape(encodeURIComponent(s)));
-}
-
-// Validate date dd-mm-yyyy (basic)
-function validateDate(dateStr) {
-  const regex = /^\d{2}-\d{2}-\d{4}$/;
-  if(!regex.test(dateStr)) return false;
-  const [dd, mm, yyyy] = dateStr.split('-').map(Number);
-  if(yyyy < 2000 || mm < 1 || mm > 12 || dd < 1 || dd > 31) return false;
-  return true;
-}
-
-// Is expired? Date format dd-mm-yyyy
-function isExpired(dateStr) {
-  if(!dateStr) return false;
-  if(!validateDate(dateStr)) return false;
-  const [dd, mm, yyyy] = dateStr.split('-').map(Number);
-  const expDate = new Date(yyyy, mm -1, dd);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return expDate < today;
-}
-
-//////////////////////////////////////
-// --- Github Functions --- //
-//////////////////////////////////////
-
-async function githubApiGet(url) {
-  const resp = await fetch(url, {
-    headers: {
-      'Authorization': 'token ' + githubToken,
-      'Accept': 'application/vnd.github.v3+json',
-    }
-  });
-  if(!resp.ok) throw new Error('GitHub API error: ' + resp.statusText);
-  return resp.json();
-}
-
-async function githubApiPut(url, body) {
-  const resp = await fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Authorization': 'token ' + githubToken,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  if(!resp.ok) throw new Error('GitHub API PUT error: ' + resp.statusText);
-  return resp.json();
-}
-
-async function fetchGitHubRepos() {
-  showStatus('⏳ Loading GitHub repositories...');
-  githubRepos = await githubApiGet('https://api.github.com/user/repos?per_page=100&sort=updated');
-  showStatus(`✅ Loaded ${githubRepos.length} repos`);
-  displayGitHubRepos();
-}
-
-function displayGitHubRepos() {
-  repoListDiv.innerHTML = '';
-  githubRepos.forEach(repo => {
-    const div = document.createElement('div');
-    div.textContent = repo.name + (repo.private ? ' 🔒' : ' 🌍');
-    div.style.padding = '6px';
-    div.style.borderBottom = '1px solid #333';
-    div.style.cursor = 'pointer';
-    div.title = repo.full_name;
-    div.onclick = () => {
-      githubSelectedRepo = repo;
-      fetchGitHubJsonFiles(repo);
-      // Highlight selected
-      Array.from(repoListDiv.children).forEach(c => c.style.color = '#aaa');
-      div.style.color = '#ffc107';
-    };
-    repoListDiv.appendChild(div);
-  });
-}
-
-async function fetchGitHubJsonFiles(repo) {
-  showStatus(`⏳ Fetching files for ${repo.name}...`);
-  const branch = repo.default_branch || 'main';
-  const treeData = await githubApiGet(`https://api.github.com/repos/${repo.full_name}/git/trees/${branch}?recursive=1`);
-  const jsonFiles = treeData.tree.filter(f => f.path.endsWith('.json'));
-  // Populate select
-  fileSelectDropdown.innerHTML = '<option value="">-- Select a JSON file --</option>';
-  jsonFiles.forEach(file => {
-    const option = document.createElement('option');
-    option.value = file.path;
-    option.textContent = file.path;
-    fileSelectDropdown.appendChild(option);
-  });
-  showStatus(`✅ Found ${jsonFiles.length} JSON files`);
-  githubSelectedFile = null;
-}
-
-async function loadGitHubJson() {
-  if (!githubSelectedRepo) return alert('Please select a repository!');
-  const path = fileSelectDropdown.value;
-  if (!path) return alert('Please select a JSON file!');
-  showStatus('⏳ Loading JSON file content...');
-  try {
-    const contentData = await githubApiGet(`https://api.github.com/repos/${githubSelectedRepo.full_name}/contents/${path}`);
-    githubFileSha = contentData.sha;
-    const jsonStr = base64Decode(contentData.content);
-    currentData = JSON.parse(jsonStr);
-    updateUIAfterDataLoad('GitHub repo: ' + githubSelectedRepo.name + '/' + path);
-  } catch(error) {
-    alert('GitHub load error: ' + error.message);
-    showStatus('Error loading GitHub file', true);
-  }
-}
-
-async function saveGitHubJson() {
-  if (!githubSelectedRepo || !githubSelectedFile) return alert('No GitHub repo/file selected!');
-  showStatus('⏳ Saving JSON to GitHub...');
-  try {
-    const contentEncoded = base64Encode(JSON.stringify(currentData, null, 2));
-    const commitMsg = `Update keys via Admin Panel (${new Date().toLocaleString()})`;
-    const res = await githubApiPut(`https://api.github.com/repos/${githubSelectedRepo.full_name}/contents/${githubSelectedFile}`, {
-      message: commitMsg,
-      content: contentEncoded,
-      sha: githubFileSha
-    });
-    githubFileSha = res.content.sha;
-    showStatus('✅ JSON saved to GitHub!');
-    updateUIAfterDataLoad(`GitHub repo: ${githubSelectedRepo.name} / ${githubSelectedFile}`);
-  } catch(err) {
-    alert('GitHub save error: ' + err.message);
-    showStatus('Error saving GitHub file', true);
-  }
-}
-
-//////////////////////////////////////
-// --- Firebase Functions --- //
-//////////////////////////////////////
-
-// Firebase authorized email as per your rules
-const AUTHORIZED_EMAIL = "www.webomprakashjat@gmail.com";
-
-firebaseGoogleBtn.onclick = async () => {
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const result = await auth.signInWithPopup(provider);
-    const user = result.user;
-    if (!user) throw new Error('No user info returned');
-    if (user.email !== AUTHORIZED_EMAIL) {
-      alert(`Unauthorized user email: ${user.email}\nOnly ${AUTHORIZED_EMAIL} can save data.`);
-    }
-    googleLoginSuccess(user);
-  } catch(err) {
-    alert('Firebase login error: ' + err.message);
-  }
-};
-
-auth.onAuthStateChanged(user => {
-  if(user) {
-    googleLoginSuccess(user);
-  } else {
-    clearUserInfo();
-  }
-});
-
-function googleLoginSuccess(user) {
-  firebaseUser = user;
-  currentProvider = 'firebase';
-  githubToken = null;
-  githubSelectedRepo = null;
-  githubSelectedFile = null;
-  githubRepos = [];
-  githubFileSha = null;
-  showUserInfo(user);
-  showSection('firebase');
-  dataSourceInfo.textContent = 'Firebase Realtime Database (root)';
-  resetStatus();
-  rawJsonEditor.value = '';
-  currentData = null;
-  keysListContainer.innerHTML = '';
-}
-
-async function loadFirebaseJson() {
-  if (!firebaseUser) return alert('Not logged in');
-  showStatus('⏳ Loading JSON from Firebase...');
-  try {
-    const snapshot = await db.ref('/').get(); // root path per screenshot
-    const data = snapshot.val() || {};
-    currentData = data;
-    updateUIAfterDataLoad('Firebase Realtime Database (root)');
-  } catch(err) {
-    alert('Firebase load error: ' + err.message);
-    showStatus('Error loading Firebase data', true);
-  }
-}
-
-async function saveFirebaseJson() {
-  if (!firebaseUser) return alert('Not logged in');
-  if (firebaseUser.email !== AUTHORIZED_EMAIL) {
-    return alert(`Unauthorized email: ${firebaseUser.email} cannot save data.`);
-  }
-  showStatus('⏳ Saving JSON to Firebase...');
-  try {
-    await db.ref('/').set(currentData);
-    showStatus('✅ JSON saved to Firebase!');
-    updateUIAfterDataLoad('Firebase Realtime Database (root)');
-  } catch(err) {
-    alert('Firebase save error: ' + err.message);
-    showStatus('Error saving Firebase data', true);
-  }
-}
-
-//////////////////////////////
-// --- Shared UI Handlers --- //
-//////////////////////////////
-
-function updateUIAfterDataLoad(sourceInfo) {
-  resetStatus();
-  dataSourceInfo.textContent = sourceInfo;
-  // Update raw JSON editor
-  rawJsonEditor.value = JSON.stringify(currentData, null, 2);
-  // Update keys list UI
-  displayKeysList();
-}
-
-// Display keys/licenses list (supports array or object)
-function displayKeysList() {
-  keysListContainer.innerHTML = '';
-  if(!currentData) {
-    keysListContainer.innerHTML = `<div class="empty-state">No JSON data loaded.</div>`;
-    return;
-  }
-  let keysArray = [];
-  if (Array.isArray(currentData)) {
-    keysArray = currentData;
-  } else if (typeof currentData === 'object') {
-    keysArray = Object.keys(currentData).map(k => {
-      const v = currentData[k];
-      return {
-        device_id: v.device_id || k,
-        key: v.key || '',
-        expirydate: v.expirydate || '',
-        user: v.user || '',
-        Allowoffline: v.Allowoffline || false
-      };
-    });
-  } else {
-    keysListContainer.innerHTML = `<div class="empty-state">Invalid JSON format.</div>`;
-    return;
-  }
-  if(keysArray.length === 0) {
-    keysListContainer.innerHTML = `<div class="empty-state">Empty keys list.</div>`;
-    return;
-  }
-  keysArray.forEach((item, idx) => {
-    const isExpiredVal = isExpired(item.expirydate);
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.innerHTML = `
-      <p><b>#${idx+1} Device:</b> ${item.device_id}</p>
-      <p><b>User:</b> ${item.user}</p>
-      <p><b>Key:</b> ${item.key}</p>
-      <p><b>Expiry:</b> ${item.expirydate} ${isExpiredVal ? '⚠️ Expired' : ''}</p>
-      <p><b>Offline:</b> ${item.Allowoffline ? 'Yes' : 'No'}</p>
-      <div class="btn-group" style="margin-top:8px;">
-        <button class="btn-update" onclick="editKey(${idx})">✏️ Update</button>
-        <button class="btn-delete" onclick="deleteKey(${idx})">🗑 Delete</button>
+  <!-- Add/Edit Key Modal -->
+  <div class="modal-bg" id="keyModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">➕ Add New License Key</div>
+        <button class="modal-close" onclick="closeKeyModal()">×</button>
       </div>
-      <hr style="margin:15px 0; border-color:#333;">
-    `;
-    keysListContainer.appendChild(div);
-  });
-}
+      <div class="modal-body">
+        <!-- Device ID -->
+        <div class="modal-input-group">
+          <label>📱 Device ID</label>
+          <input id="deviceId" placeholder="Device ID" type="text" class="modal-input" oninput="checkDeviceIdDuplicate()" />
+          <div class="warning-msg" id="deviceIdWarning">⚠️ Device ID already exists! Will update existing entry.</div>
+        </div>
 
-let editingKeyIndex = null;
+        <!-- Key + Generate -->
+        <div class="modal-input-group">
+          <label>🔑 License Key</label>
+          <div style="display:flex;gap:6px;">
+            <input id="key" placeholder="License key" type="text" class="modal-input" style="flex:1;" oninput="checkKeyDuplicate()" />
+            <button class="quick-btn" onclick="generateRandomKey()" style="flex:0 0 70px;">🎲 Gen</button>
+          </div>
+          <div class="warning-msg" id="keyWarning">⚠️ This key already exists! Please generate a new one.</div>
+        </div>
 
-function editKey(index) {
-  editingKeyIndex = index;
-  let keyObj = null;
-  if(Array.isArray(currentData)) {
-    keyObj = currentData[index];
-  } else if(typeof currentData === 'object') {
-    const keys = Object.keys(currentData);
-    if(index < keys.length) keyObj = currentData[keys[index]];
-  }
-  if(!keyObj) return alert('Invalid selection!');
-  // Show modal with key info
-  modalTitle.textContent = '✏️ Update License Key';
-  modalDeviceId.value = keyObj.device_id || '';
-  modalKey.value = keyObj.key || '';
-  modalExpiry.value = keyObj.expirydate || '';
-  modalUserName.value = keyObj.user || '';
-  modalAllowOffline.checked = !!keyObj.Allowoffline;
-  keyModal.style.display = 'flex';
-}
+        <!-- Expiry + Quick buttons -->
+        <div class="modal-input-group">
+          <label>📅 Expiry Date</label>
+          <div class="expiry-inline">
+            <input id="expiry" placeholder="dd-mm-yyyy" type="text" class="modal-input" />
+            <button class="quick-btn" onclick="setQuickDate(7)">7d</button>
+            <button class="quick-btn" onclick="setQuickDate(15)">15d</button>
+            <button class="quick-btn" onclick="setQuickDate(30)">30d</button>
+          </div>
+        </div>
 
-function deleteKey(index) {
-  if(!confirm('Delete this license key?')) return;
-  if(Array.isArray(currentData)) {
-    currentData.splice(index, 1);
-  } else if(typeof currentData === 'object') {
-    let keys = Object.keys(currentData);
-    if(index < keys.length) {
-      delete currentData[keys[index]];
+        <div class="modal-input-group">
+          <div class="expiry-inline">
+            <button class="quick-btn" onclick="adjustExpiry(-1)">−1</button>
+            <button class="quick-btn" onclick="adjustExpiry(1)">+1</button>
+            <label class="checkbox-label inline-checkbox">
+              <input id="allowOffline" type="checkbox" />
+              <span>✓ Allow Offline</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- User + Position -->
+        <div class="modal-row">
+          <div class="modal-input-group" style="position:relative;">
+            <label>👤 User Name</label>
+            <input id="username" placeholder="User name" type="text" class="modal-input" autocomplete="off" />
+            <div id="userSuggestions" class="suggestions"></div>
+          </div>
+          <div class="modal-input-group" style="position:relative;">
+            <label>📍 Position</label>
+            <input id="positionInput" placeholder="#" type="text" class="modal-input" autocomplete="off" />
+            <div id="positionSuggestions" class="suggestions"></div>
+          </div>
+        </div>
+
+        <span id="positionInfoModal" style="display:block;margin:6px 0;color:var(--text-secondary);font-size:10px;">(Total: 0 keys)</span>
+
+        <!-- Buttons -->
+        <div class="modal-buttons">
+          <button class="modal-save-btn" id="saveBtn">🔥 Save to Firebase</button>
+          <button class="modal-cancel-btn" onclick="closeKeyModal()">✕ Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Copied!</div>
+
+  <!-- Saved Card Popup -->
+  <div class="modal-bg" id="savedCardModal">
+    <div class="modal-box" style="max-width:340px;">
+      <div class="modal-header">
+        <div class="modal-title" id="savedCardTitle">✅ Key Saved!</div>
+        <button class="modal-close" onclick="closeSavedCardModal()">×</button>
+      </div>
+      <div class="modal-body" style="padding:12px;">
+        <div id="savedCardPreview"></div>
+        <button class="modal-save-btn" onclick="closeSavedCardModal()" style="margin-top:12px; width:100%">👍 OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA1FIDLD-AKVlEz-AJiweYVdxhIP0Rnijk",
+      authDomain: "opjat-2005.firebaseapp.com",
+      databaseURL: "https://opjat-2005-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "opjat-2005",
+      storageBucket: "opjat-2005.firebasestorage.app",
+      messagingSenderId: "2500552965",
+      appId: "1:2500552965:web:4f6664a366967a2525af6c"
+    };
+
+    // Initialize Firebase
+    let app, database;
+    let currentCollection = 'Camera';
+    let currentData = [];
+    let allDataArray = [];
+    let currentUpdateId = null;
+    let currentFilter = 'all';
+
+    function showToast(msg) { 
+      const t = document.getElementById('toast'); 
+      t.textContent = msg; 
+      t.classList.add('show'); 
+      setTimeout(() => t.classList.remove('show'), 2000); 
     }
-  }
-  displayKeysList();
-  updateRawJsonEditor();
-}
 
-function updateRawJsonEditor() {
-  rawJsonEditor.value = JSON.stringify(currentData, null, 2);
-}
-
-// Add new key modal
-addKeyBtn.onclick = () => {
-  editingKeyIndex = null;
-  modalTitle.textContent = '➕ Add License Key';
-  modalDeviceId.value = '';
-  modalKey.value = '';
-  modalExpiry.value = '';
-  modalUserName.value = '';
-  modalAllowOffline.checked = false;
-  keyModal.style.display = 'flex';
-};
-
-modalCancelBtn.onclick = () => {
-  keyModal.style.display = 'none';
-};
-
-modalSaveBtn.onclick = () => {
-  const deviceId = modalDeviceId.value.trim();
-  const key = modalKey.value.trim();
-  const expiry = modalExpiry.value;
-  const user = modalUserName.value.trim();
-  const allow = modalAllowOffline.checked;
-
-  if(!deviceId || !key || !expiry || !user) {
-    return alert('Fill all fields!');
-  }
-  if(!validateDate(expiry)) {
-    return alert('Expiry date must be in dd-mm-yyyy format!');
-  }
-
-  let newEntry = {device_id: deviceId, key, expirydate: expiry, user, Allowoffline: allow};
-
-  if(Array.isArray(currentData)) {
-    if(editingKeyIndex !== null) {
-      currentData[editingKeyIndex] = newEntry;
-    } else {
-      currentData.push(newEntry);
+    function isExpired(dateStr) {
+      if (!dateStr) return false;
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return false;
+      const expDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+      return expDate < new Date();
     }
-  } else if(typeof currentData === 'object') {
-    // Use device_id as key
-    currentData[deviceId] = newEntry;
-  } else {
-    alert('Invalid data format, cannot add key.');
-    return;
-  }
 
-  updateRawJsonEditor();
-  displayKeysList();
-  keyModal.style.display = 'none';
-};
+    function formatDate(d) { 
+      return String(d.getDate()).padStart(2,'0') + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + d.getFullYear(); 
+    }
 
+    window.setQuickDate = function(days) { 
+      const d = new Date(); 
+      d.setDate(d.getDate() + days); 
+      document.getElementById('expiry').value = formatDate(d); 
+    }
 
-//////////////////////////////
-// --- Raw JSON Editor Actions --- //
-//////////////////////////////
+    window.adjustExpiry = function(days) { 
+      const input = document.getElementById('expiry'); 
+      if (!input.value) return; 
+      const parts = input.value.split('-'); 
+      if (parts.length !== 3) return; 
+      const d = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0])); 
+      if (isNaN(d.getTime())) return; 
+      d.setDate(d.getDate() + days); 
+      input.value = formatDate(d); 
+    }
 
-saveJsonBtn.onclick = async () => {
-  try {
-    const parsed = JSON.parse(rawJsonEditor.value);
-    currentData = parsed;
-  } catch(e) {
-    return alert('Invalid JSON input!');
-  }
-  showStatus('Saving JSON...');
-  if (currentProvider === 'github') {
-    await saveGitHubJson();
-  } else if (currentProvider === 'firebase') {
-    await saveFirebaseJson();
-  }
-  showStatus('JSON saved!');
-  displayKeysList();
-};
+    window.generateRandomKey = function() { 
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; 
+      const existing = allDataArray.map(x => x.key); 
+      let key = ""; 
+      const lens = [11, 12, 13]; 
+      do { 
+        const len = lens[Math.floor(Math.random() * lens.length)]; 
+        key = ""; 
+        for (let i = 0; i < len; i++) key += chars.charAt(Math.floor(Math.random() * chars.length)); 
+      } while (existing.includes(key)); 
+      document.getElementById('key').value = key; 
+      checkKeyDuplicate(); 
+    }
 
-formatJsonBtn.onclick = () => {
-  try {
-    const parsed = JSON.parse(rawJsonEditor.value);
-    rawJsonEditor.value = JSON.stringify(parsed, null, 2);
-    alert('Formatted JSON!');
-  } catch(e) {
-    alert('Invalid JSON!');
-  }
-};
+    function checkDeviceIdDuplicate() {
+      const deviceId = document.getElementById('deviceId').value.trim();
+      const warning = document.getElementById('deviceIdWarning');
+      if (!deviceId || currentUpdateId) { warning.style.display = 'none'; return; }
+      const exists = allDataArray.find(i => (i.device_id || i.id) === deviceId);
+      if (exists) { warning.style.display = 'block'; } 
+      else { warning.style.display = 'none'; }
+    }
 
-resetJsonBtn.onclick = () => {
-  if(!currentData) return;
-  if(confirm('Reset editor to last loaded data?')) {
-    rawJsonEditor.value = JSON.stringify(currentData, null, 2);
-  }
-};
+    function checkKeyDuplicate() {
+      const key = document.getElementById('key').value.trim();
+      const warning = document.getElementById('keyWarning');
+      if (!key) { warning.style.display = 'none'; return false; }
+      
+      let originalKey = null;
+      if (currentUpdateId) {
+        const originalItem = allDataArray.find(i => (i.device_id || i.id) === currentUpdateId);
+        if (originalItem) originalKey = originalItem.key;
+      }
+      
+      const exists = allDataArray.find(i => {
+        const itemId = i.device_id || i.id;
+        const isSameItem = currentUpdateId && itemId === currentUpdateId;
+        return i.key === key && !isSameItem;
+      });
+      
+      if (currentUpdateId && key === originalKey) {
+        warning.style.display = 'none';
+        return false;
+      }
+      
+      if (exists) { warning.style.display = 'block'; return true; } 
+      else { warning.style.display = 'none'; return false; }
+    }
 
-//////////////////////////////
-// --- Tab Control --- //
-//////////////////////////////
+    window.copyKey = function(key) { 
+      navigator.clipboard.writeText(key); 
+      showToast('✅ Key copied!'); 
+    }
 
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const tabName = tab.dataset.tab;
-    keysTabContent.classList.remove('active');
-    jsonTabContent.classList.remove('active');
-    if(tabName === 'keysTab') keysTabContent.classList.add('active');
-    if(tabName === 'jsonTab') jsonTabContent.classList.add('active');
-  });
-});
+    function scrollToElement(el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
-//////////////////////////////
-// --- GitHub Login --- //
-//////////////////////////////
+    function highlightElement(el) {
+      el.classList.add('highlight');
+      setTimeout(() => el.classList.remove('highlight'), 1500);
+    }
 
-githubLoginBtn.onclick = async () => {
-  const token = githubTokenInput.value.trim();
-  if(!token) return alert('Enter your GitHub token!');
-  if(!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
-    return alert('Token should start with ghp_ or github_pat_');
-  }
-  githubToken = token;
-  currentProvider = 'github';
-  firebaseUser = null;
-  showStatus('Verifying GitHub token and loading repos...');
-  githubSelectedRepo = null;
-  githubSelectedFile = null;
-  githubRepos = [];
-  githubFileSha = null;
-  showUserInfo({ login: 'GitHub User', avatar_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' });
-  showSection('github');
-  dataSourceInfo.textContent = 'GitHub Repositories';
+    function openKeyModal() {
+      currentUpdateId = null;
+      document.getElementById('deviceId').value = '';
+      document.getElementById('key').value = '';
+      document.getElementById('expiry').value = '';
+      document.getElementById('username').value = '';
+      document.getElementById('allowOffline').checked = false;
+      document.getElementById('positionInput').value = allDataArray.length + 1;
+      document.getElementById('modalTitle').innerHTML = '➕ Add New License Key';
+      document.getElementById('deviceIdWarning').style.display = 'none';
+      document.getElementById('keyWarning').style.display = 'none';
+      document.getElementById('positionInfoModal').textContent = `(Total: ${allDataArray.length} keys)`;
+      document.getElementById('keyModal').classList.add('show');
+    }
 
-  try {
-    await fetchGitHubRepos();
-  } catch(e) {
-    alert('GitHub error: ' + e.message);
-    clearUserInfo();
-    githubToken = null;
-  }
-};
+    function closeKeyModal() {
+      document.getElementById('keyModal').classList.remove('show');
+    }
 
-loadGithubJsonBtn.onclick = async () => {
-  await loadGitHubJson();
-};
+    function switchToTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById(`nav${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+    }
 
-//////////////////////////////
-// --- Firebase Load Button --- //
-//////////////////////////////
+    // Firebase Functions
+    async function connectToFirebase() {
+      try {
+        document.getElementById('connectBtn').innerHTML = '<span class="spinner"></span> Connecting...';
+        document.getElementById('connectBtn').disabled = true;
 
-const loadFirebaseJsonBtn = document.getElementById('loadFirebaseJsonBtn');
-loadFirebaseJsonBtn.onclick = async () => {
-  await loadFirebaseJson();
-};
+        app = firebase.initializeApp(firebaseConfig);
+        database = firebase.database();
 
-//////////////////////////////
-// --- Logout --- //
-//////////////////////////////
+        // Test connection
+        const testRef = database.ref('.info/connected');
+        testRef.on('value', (snapshot) => {
+          if (snapshot.val() === true) {
+            document.getElementById('connectionStatus').className = 'connection-status connected';
+            document.getElementById('connectionStatus').innerHTML = '<span class="connection-dot"></span><span>Connected</span>';
+          } else {
+            document.getElementById('connectionStatus').className = 'connection-status disconnected';
+            document.getElementById('connectionStatus').innerHTML = '<span class="connection-dot"></span><span>Disconnected</span>';
+          }
+        });
 
-logoutBtn.onclick = async () => {
-  if(currentProvider === 'firebase') {
-    await auth.signOut();
-    firebaseUser = null;
-  }
-  // Clear GitHub token/login
-  githubToken = null;
-  githubSelectedRepo = null;
-  githubSelectedFile = null;
-  githubRepos = [];
-  githubFileSha = null;
-  currentProvider = null;
-  currentData = null;
-  clearUserInfo();
-  showSection(null);
-  rawJsonEditor.value = '';
-  keysListContainer.innerHTML = '';
-  githubTokenInput.value = '';
-};
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('mainPanel').style.display = 'block';
+        document.getElementById('bottomNav').style.display = 'flex';
+        document.getElementById('userInfo').style.display = 'flex';
 
-</script>
+        // Load default collection
+        await loadCollectionData();
+        showToast('🔥 Firebase Connected!');
+
+      } catch (error) {
+        console.error('Firebase connection error:', error);
+        alert('❌ Connection failed: ' + error.message);
+        document.getElementById('connectBtn').innerHTML = '🚀 Connect to Firebase';
+        document.getElementById('connectBtn').disabled = false;
+      }
+    }
+
+    async function loadCollectionData() {
+      try {
+        document.getElementById('firebaseStatus').innerHTML = '🔄 Loading...';
+        
+        const collectionRef = database.ref(currentCollection);
+        const snapshot = await collectionRef.once('value');
+        const data = snapshot.val();
+
+        if (data && Array.isArray(data)) {
+          currentData = data.filter(item => item !== null);
+        } else if (data && typeof data === 'object') {
+          currentData = Object.keys(data).map(k => ({ id: k, ...data[k] }));
+        } else {
+          currentData = [];
+        }
+
+        allDataArray = currentData;
+        displayData();
+        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+        document.getElementById('firebaseStatus').innerHTML = '✅ Loaded';
+
+        // Set up realtime listener
+        collectionRef.on('value', (snapshot) => {
+          const data = snapshot.val();
+          if (data && Array.isArray(data)) {
+            currentData = data.filter(item => item !== null);
+          } else if (data && typeof data === 'object') {
+            currentData = Object.keys(data).map(k => ({ id: k, ...data[k] }));
+          } else {
+            currentData = [];
+          }
+          allDataArray = currentData;
+          displayData();
+          document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+        });
+
+      } catch (error) {
+        console.error('Load error:', error);
+        document.getElementById('firebaseStatus').innerHTML = '❌ Error';
+        showToast('❌ Load failed!');
+      }
+    }
+
+    async function saveDataToFirebase(msg = 'Update') {
+      try {
+        document.getElementById('firebaseStatus').innerHTML = '📤 Saving...';
+        
+        const collectionRef = database.ref(currentCollection);
+        await collectionRef.set(currentData);
+        
+        document.getElementById('firebaseStatus').innerHTML = '✅ Saved';
+        return true;
+      } catch (error) {
+        console.error('Save error:', error);
+        alert('❌ Save failed: ' + error.message);
+        document.getElementById('firebaseStatus').innerHTML = '❌ Error';
+        return false;
+      }
+    }
+
+    function displayData(searchTerm = '', highlightId = null) {
+      const list = document.getElementById('dataList');
+      list.innerHTML = '';
+
+      let total = allDataArray.length, active = 0, expired = 0;
+      allDataArray.forEach(i => { if (isExpired(i.expirydate)) expired++; else active++; });
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('activeCount').textContent = active;
+      document.getElementById('expiredCount').textContent = expired;
+      document.getElementById('positionInfo').textContent = `(Total: ${total} keys)`;
+
+      let filtered = allDataArray;
+      if (currentFilter === 'active') filtered = allDataArray.filter(i => !isExpired(i.expirydate));
+      else if (currentFilter === 'expired') filtered = allDataArray.filter(i => isExpired(i.expirydate));
+
+      if (searchTerm) {
+        const s = searchTerm.toLowerCase();
+        filtered = filtered.filter(i => {
+          const did = (i.device_id || i.id || '').toLowerCase();
+          const user = (i.user || '').toLowerCase();
+          const key = (i.key || '').toLowerCase();
+          return did.includes(s) || user.includes(s) || key.includes(s);
+        });
+      }
+
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state"><p>No keys found</p><button onclick="openKeyModal()">➕ Add New Key</button></div>`;
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const deviceId = item.device_id || item.id || 'Unknown';
+        const exp = isExpired(item.expirydate);
+        const pos = allDataArray.findIndex(d => (d.device_id || d.id) === deviceId) + 1;
+
+        const div = document.createElement('div');
+        div.className = 'device-card' + (exp ? ' expired' : '');
+        div.id = `card-${deviceId}`;
+        div.innerHTML = `
+          <div class="position-tag">#${pos}</div>
+          <div class="device-id">${deviceId}</div>
+          <div class="user-name-card">${item.user || 'N/A'}</div>
+          <div class="key-value" onclick="copyKey('${item.key || ''}')">${item.key || 'N/A'}</div>
+          <div class="meta-row">
+            <span class="expiry-text">${item.expirydate || 'N/A'}</span>
+            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'Offline' : 'Online'}</span>
+          </div>
+          ${exp ? '<div class="expired-badge">⚠️ EXPIRED</div>' : ''}
+          <div class="card-actions">
+            <button class="action-btn edit" onclick="updateItem('${deviceId}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="action-btn delete" onclick="deleteItem('${deviceId}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+            <button class="action-btn disable" onclick="disableItem('${deviceId}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </button>
+          </div>`;
+        list.appendChild(div);
+
+        if (highlightId && deviceId === highlightId) {
+          setTimeout(() => { scrollToElement(div); highlightElement(div); }, 100);
+        }
+      });
+    }
+
+    window.updateItem = function(id) {
+      currentUpdateId = id;
+      let item = currentData.find(e => (e.device_id || e.id) === id);
+      if (item) {
+        document.getElementById('deviceId').value = item.device_id || id;
+        document.getElementById('key').value = item.key || '';
+        document.getElementById('expiry').value = item.expirydate || '';
+        document.getElementById('username').value = item.user || '';
+        document.getElementById('allowOffline').checked = item.Allowoffline || false;
+        document.getElementById('positionInput').value = allDataArray.findIndex(x => (x.device_id || x.id) === id) + 1;
+        document.getElementById('modalTitle').innerHTML = '✏️ Update License Key';
+        document.getElementById('deviceIdWarning').style.display = 'none';
+        document.getElementById('keyWarning').style.display = 'none';
+        document.getElementById('positionInfoModal').textContent = `(Total: ${allDataArray.length} keys)`;
+        document.getElementById('keyModal').classList.add('show');
+      }
+    }
+
+    window.deleteItem = async function(id) {
+      if (confirm(`Delete key for ${id}?`)) {
+        const idx = currentData.findIndex(i => (i.device_id || i.id) === id);
+        if (idx !== -1) currentData.splice(idx, 1);
+        
+        if (await saveDataToFirebase(`Delete ${id}`)) {
+          allDataArray = currentData;
+          displayData();
+          document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+          showToast('🗑 Deleted!');
+        }
+      }
+    }
+
+    window.disableItem = async function(id) {
+      if (confirm(`Disable key for ${id}?`)) {
+        const idx = currentData.findIndex(i => (i.device_id || i.id) === id);
+        if (idx !== -1) {
+          const parts = (currentData[idx].expirydate || '01-01-2026').split('-');
+          currentData[idx].expirydate = `${parts[0]}-${parts[1]}-2020`;
+          
+          if (await saveDataToFirebase(`Disable ${id}`)) {
+            allDataArray = currentData;
+            displayData('', id);
+            document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+            showToast('🚫 Disabled!');
+          }
+        }
+      }
+    }
+
+    function showSavedCard(deviceId, isUpdate) {
+      const item = allDataArray.find(i => (i.device_id || i.id) === deviceId);
+      if (!item) return;
+      const exp = isExpired(item.expirydate);
+      const pos = allDataArray.findIndex(d => (d.device_id || d.id) === deviceId) + 1;
+
+      document.getElementById('savedCardTitle').innerHTML = isUpdate ? '✅ Key Updated!' : '✅ Key Added!';
+      document.getElementById('savedCardPreview').innerHTML = `
+        <div class="device-card ${exp ? 'expired' : ''}" style="margin:0;position:relative;">
+          <div class="position-tag">#${pos}</div>
+          <div class="device-id">${item.device_id || deviceId}</div>
+          <div class="user-name-card">${item.user || 'N/A'}</div>
+          <div class="key-value" onclick="copyKey('${item.key || ''}')">${item.key || 'N/A'}</div>
+          <div class="meta-row">
+            <span class="expiry-text">${item.expirydate || 'N/A'}</span>
+            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'Offline' : 'Online'}</span>
+          </div>
+          ${exp ? '<div class="expired-badge">⚠️ EXPIRED</div>' : ''}
+        </div>`;
+      document.getElementById('savedCardModal').classList.add('show');
+    }
+
+    window.closeSavedCardModal = function() {
+      document.getElementById('savedCardModal').classList.remove('show');
+      const preview = document.getElementById('savedCardPreview');
+      const deviceIdEl = preview.querySelector('.device-id');
+      if (deviceIdEl) {
+        const deviceId = deviceIdEl.textContent;
+        const card = document.getElementById(`card-${deviceId}`);
+        if (card) {
+          setTimeout(() => { scrollToElement(card); highlightElement(card); }, 100);
+        }
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('connectBtn').addEventListener('click', connectToFirebase);
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Logout?')) {
+        location.reload();
+      }
+    });
+
+    // Collection selector
+    document.querySelectorAll('.collection-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        document.querySelectorAll('.collection-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCollection = btn.dataset.collection;
+        await loadCollectionData();
+        showToast(`📁 Loaded ${currentCollection}`);
+      });
+    });
+
+    // Save button
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('saveBtn');
+      const id = document.getElementById('deviceId').value.trim();
+      const key = document.getElementById('key').value.trim();
+      const expiry = document.getElementById('expiry').value.trim();
+      const user = document.getElementById('username').value.trim();
+      const allow = document.getElementById('allowOffline').checked;
+      const posVal = document.getElementById('positionInput').value.trim();
+
+      if (!id || !key || !expiry || !user) { alert('⚠️ Fill all fields!'); return; }
+      if (checkKeyDuplicate()) { return; }
+
+      let pos = parseInt(posVal);
+      if (!pos || pos < 1 || pos > allDataArray.length + 1) { alert('⚠️ Invalid position!'); return; }
+
+      btn.disabled = true;
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner"></span> Saving...';
+
+      const entry = { device_id: id, key, expirydate: expiry, user, Allowoffline: allow };
+      let arr = [...allDataArray];
+
+      if (currentUpdateId) {
+        const idx = arr.findIndex(i => (i.device_id || i.id) === currentUpdateId);
+        if (idx !== -1) arr.splice(idx, 1);
+      }
+
+      arr.splice(pos - 1, 0, entry);
+      currentData = arr;
+
+      const msg = currentUpdateId ? `Update ${id}` : `Add ${id}`;
+      const wasUpdate = !!currentUpdateId;
+      const result = await saveDataToFirebase(msg);
+
+      btn.disabled = false;
+      btn.innerHTML = orig;
+
+      if (result) {
+        document.getElementById('searchInput').value = '';
+        allDataArray = currentData;
+        displayData('', null);
+        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+        currentUpdateId = null;
+        closeKeyModal();
+        showSavedCard(id, wasUpdate);
+      }
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', (e) => displayData(e.target.value));
+
+    // Filter tabs
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        displayData(document.getElementById('searchInput').value);
+      });
+    });
+
+    // Sub tabs
+    document.querySelectorAll('.sub-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#tab-devices > .tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`subtab-${tab.dataset.subtab}`).classList.add('active');
+      });
+    });
+
+    // JSON Editor buttons
+    document.getElementById('updateFromJsonBtn').addEventListener('click', async () => {
+      try {
+        const parsed = JSON.parse(document.getElementById('rawJsonEditor').value.trim());
+        if (confirm('Save JSON to Firebase?')) {
+          currentData = parsed;
+          if (await saveDataToFirebase('JSON Update')) {
+            allDataArray = currentData;
+            displayData();
+            showToast('✅ Saved!');
+          }
+        }
+      } catch (e) { alert('❌ Invalid JSON!'); }
+    });
+
+    document.getElementById('formatJsonBtn').addEventListener('click', () => {
+      try {
+        document.getElementById('rawJsonEditor').value = JSON.stringify(JSON.parse(document.getElementById('rawJsonEditor').value.trim()), null, 2);
+        showToast('✨ Formatted!');
+      } catch (e) { alert('❌ Invalid JSON!'); }
+    });
+
+    document.getElementById('copyJsonBtn').addEventListener('click', () => {
+      document.getElementById('rawJsonEditor').select();
+      document.execCommand('copy');
+      showToast('📋 Copied!');
+    });
+
+    document.getElementById('resetJsonBtn').addEventListener('click', () => {
+      if (confirm('Reset?')) {
+        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+        showToast('🔄 Reset!');
+      }
+    });
+
+    // Refresh button
+    document.getElementById('refreshDataBtn').addEventListener('click', async () => {
+      await loadCollectionData();
+      showToast('🔄 Refreshed!');
+    });
+
+    // Theme selector
+    document.querySelectorAll('.theme-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        document.body.setAttribute('data-theme', opt.dataset.theme);
+        localStorage.setItem('firebase_theme', opt.dataset.theme);
+      });
+    });
+
+    // User suggestions
+    document.getElementById('username').addEventListener('input', function() {
+      const v = this.value.toLowerCase();
+      const sug = document.getElementById('userSuggestions');
+      sug.innerHTML = '';
+      if (!v) { sug.classList.remove('show'); return; }
+      const matches = [...new Set(allDataArray.map(x => x.user).filter(u => u && u.toLowerCase().includes(v)))].slice(0, 5);
+      if (!matches.length) { sug.classList.remove('show'); return; }
+      matches.forEach(name => {
+        const d = document.createElement('div');
+        d.className = 'suggestion-item';
+        d.textContent = name;
+        d.onclick = () => { document.getElementById('username').value = name; sug.classList.remove('show'); };
+        sug.appendChild(d);
+      });
+      sug.classList.add('show');
+    });
+
+    // Position suggestions
+    document.getElementById('positionInput').addEventListener('input', function() {
+      const v = this.value.toLowerCase();
+      const sug = document.getElementById('positionSuggestions');
+      sug.innerHTML = '';
+      if (!v || /^\d+$/.test(v)) { sug.classList.remove('show'); return; }
+      const matches = allDataArray.filter(i => (i.user || '').toLowerCase().includes(v)).slice(0, 5);
+      if (!matches.length) { sug.classList.remove('show'); return; }
+      matches.forEach(i => {
+        const did = i.device_id || i.id;
+        const pos = allDataArray.findIndex(d => (d.device_id || d.id) === did) + 1;
+        const d = document.createElement('div');
+        d.className = 'suggestion-item';
+        d.innerHTML = `<strong>#${pos}</strong> - ${i.user || 'N/A'}`;
+        d.onclick = () => { document.getElementById('positionInput').value = pos; sug.classList.remove('show'); };
+        sug.appendChild(d);
+      });
+      sug.classList.add('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('username').contains(e.target)) document.getElementById('userSuggestions').classList.remove('show');
+      if (!document.getElementById('positionInput').contains(e.target)) document.getElementById('positionSuggestions').classList.remove('show');
+    });
+
+    // Scroll to top button
+    window.addEventListener('scroll', () => {
+      document.getElementById('topBtn').style.display = window.scrollY > 200 ? 'flex' : 'none';
+    });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('firebase_theme');
+    if (savedTheme) {
+      document.body.setAttribute('data-theme', savedTheme);
+      document.querySelectorAll('.theme-option').forEach(o => {
+        o.classList.toggle('active', o.dataset.theme === savedTheme);
+      });
+    }
+  </script>
 </body>
 </html>
