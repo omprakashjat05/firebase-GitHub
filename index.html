@@ -3,452 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>🔥 Firebase Admin Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>🔥 Firebase Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --bg-primary: #f5e6d3;
-      --bg-secondary: #e8d5c4;
-      --bg-card: #fff9f0;
-      --bg-card-expired: linear-gradient(145deg, #ffe5e5 0%, #ffd6d6 100%);
-      --bg-input: #ffffff;
-      --accent: #ff6b35;
-      --accent-hover: #e55a2b;
-      --accent-light: rgba(255, 107, 53, 0.15);
-      --text-primary: #333;
-      --text-secondary: #666;
-      --border: #d4c4b0;
-      --success: #27ae60;
-      --danger: #e74c3c;
-      --warning: #f39c12;
-      --card-radius: 12px;
-      --font-main: 'Poppins', sans-serif;
-      --font-mono: 'Courier New', monospace;
-      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      --card-border: 4px solid var(--accent);
-      --expired-border: 4px solid var(--danger);
+      --bg-primary: #f5e6d3; --bg-secondary: #e8d5c4; --bg-card: #fff9f0;
+      --bg-card-expired: linear-gradient(145deg, #ffdddd, #ffcccc);
+      --accent: #c4956a; --accent-light: rgba(196,149,106,0.15);
+      --text-primary: #333; --text-secondary: #666; --border: #d4c4b0;
+      --success: #27ae60; --danger: #e74c3c;
+      --header-bg: linear-gradient(135deg, #c4956a, #a67c52);
+      --font-main: 'Poppins', sans-serif; --font-mono: 'Courier New', monospace;
     }
-
-    /* ===== STARTER THEME (Warm Cream + Firebase Orange) ===== */
-    [data-theme="starter"] {
-      --bg-primary: #f5e6d3;
-      --bg-secondary: #e8d5c4;
-      --bg-card: #fff9f0;
-      --accent: #ff6b35;
-      --accent-hover: #e55a2b;
-      --border: #d4c4b0;
-      --header-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-      --card-radius: 12px;
-      --font-main: 'Poppins', sans-serif;
-    }
-
-    /* ===== STARTER PRO THEME (Dark Gold) ===== */
-    [data-theme="starter-pro"] {
-      --bg-primary: #1a1a1a;
-      --bg-secondary: #0d0d0d;
-      --bg-card: #252525;
-      --bg-card-expired: linear-gradient(145deg, #3d1a1a 0%, #2d1515 100%);
-      --accent: #ffc107;
-      --accent-hover: #ffb300;
-      --accent-light: rgba(255, 193, 7, 0.15);
-      --text-primary: #f5f5f5;
-      --text-secondary: #aaa;
-      --border: #333;
-      --header-bg: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-      --card-shadow: 0 4px 15px rgba(255, 193, 7, 0.1);
-      --card-radius: 10px;
-      --font-main: 'Poppins', sans-serif;
-    }
-
-    [data-theme="starter-pro"] .header h1 { color: #111; }
-    [data-theme="starter-pro"] .header-logo { fill: #111; }
-    [data-theme="starter-pro"] .header-btn { background: #111; color: #ffc107; }
-    [data-theme="starter-pro"] .user-name { color: #111; }
-    [data-theme="starter-pro"] .user-username { color: #333; }
-    [data-theme="starter-pro"] .device-card { border-left: 4px solid #ffc107; background: linear-gradient(145deg, #252525 0%, #1f1f1f 100%); }
-    [data-theme="starter-pro"] .device-id { color: #ffc107; }
-    [data-theme="starter-pro"] .key-value { background: rgba(255,193,7,0.15); color: #ffc107; }
-    [data-theme="starter-pro"] .json-editor { background: #0a0a0a; border-color: #ffc107; }
-
-    /* ===== STARTER MAX THEME (Neon Cyber) ===== */
-    [data-theme="starter-max"] {
-      --bg-primary: #0a0e1a;
-      --bg-secondary: #050810;
-      --bg-card: #0d1220;
-      --bg-card-expired: linear-gradient(145deg, #2a1a2a 0%, #1a1020 100%);
-      --accent: #00f5ff;
-      --accent-hover: #00d4e0;
-      --accent-light: rgba(0, 245, 255, 0.1);
-      --text-primary: #e0f7ff;
-      --text-secondary: #7fdbff;
-      --border: #1a3a4a;
-      --header-bg: linear-gradient(135deg, #0d1220 0%, #1a2a3a 100%);
-      --card-shadow: 0 0 20px rgba(0, 245, 255, 0.15);
-      --card-radius: 5px;
-      --font-main: 'Orbitron', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
-    }
-
-    [data-theme="starter-max"] body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: 
-        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px),
-        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px);
-      background-size: 30px 30px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    [data-theme="starter-max"] .header { border-bottom: 2px solid #00f5ff; box-shadow: 0 0 30px rgba(0,245,255,0.2); }
-    [data-theme="starter-max"] .device-card { 
-      border: 1px solid #00f5ff; 
-      border-left: 4px solid #00f5ff;
-      box-shadow: 0 0 15px rgba(0,245,255,0.1), inset 0 0 20px rgba(0,245,255,0.03);
-      background: linear-gradient(145deg, #0d1220 0%, #0a0e18 100%);
-    }
-    [data-theme="starter-max"] .device-card.expired { border-color: #ff0080; box-shadow: 0 0 15px rgba(255,0,128,0.2); }
-    [data-theme="starter-max"] .device-id { color: #00f5ff; text-shadow: 0 0 10px rgba(0,245,255,0.5); }
-    [data-theme="starter-max"] .key-value { background: rgba(0,245,255,0.1); color: #00f5ff; border: 1px solid rgba(0,245,255,0.3); }
-    [data-theme="starter-max"] .stats-card { background: linear-gradient(135deg, #0d1220 0%, #1a2a3a 100%); border: 1px solid #00f5ff; box-shadow: 0 0 25px rgba(0,245,255,0.2); }
-    [data-theme="starter-max"] .expired-badge { background: #ff0080; box-shadow: 0 0 10px rgba(255,0,128,0.5); }
-    [data-theme="starter-max"] .json-editor { background: #050810; border: 1px solid #00f5ff; color: #00f5ff; }
-    [data-theme="starter-max"] .sub-tabs, [data-theme="starter-max"] .filter-tab, [data-theme="starter-max"] .search-bar { border: 1px solid #1a3a4a; }
-    [data-theme="starter-max"] .sub-tab.active { background: #00f5ff; color: #0a0e1a; }
-
-    /* ===== STARTER DEVELOPER THEME (Matrix Green) ===== */
-    [data-theme="starter-developer"] {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #050505;
-      --bg-card: #0f0f0f;
-      --bg-card-expired: linear-gradient(145deg, #1a0a0a 0%, #150505 100%);
-      --accent: #00ff41;
-      --accent-hover: #00cc33;
-      --accent-light: rgba(0, 255, 65, 0.1);
-      --text-primary: #00ff41;
-      --text-secondary: #00aa2a;
-      --border: #00ff41;
-      --header-bg: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
-      --card-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
-      --card-radius: 0px;
-      --font-main: 'Share Tech Mono', monospace;
-      --font-mono: 'Share Tech Mono', monospace;
-    }
-
-    [data-theme="starter-developer"] body::before {
-      content: ">";
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      color: #00ff41;
-      font-family: 'Share Tech Mono', monospace;
-      animation: blink 1s infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
-
-    [data-theme="starter-developer"] .header { border-bottom: 1px solid #00ff41; }
-    [data-theme="starter-developer"] .device-card { 
-      border: 1px solid #00ff41; 
-      border-left: 3px solid #00ff41;
-      background: #0a0a0a;
-    }
-    [data-theme="starter-developer"] .device-card.expired { border-color: #ff0000; }
-    [data-theme="starter-developer"] .device-id { color: #00ff41; }
-    [data-theme="starter-developer"] .user-name-card, [data-theme="starter-developer"] .expiry-text { color: #00aa2a; }
-    [data-theme="starter-developer"] .key-value { background: #050505; color: #00ff41; border: 1px solid #00ff41; }
-    [data-theme="starter-developer"] .stats-card { background: #0a0a0a; border: 1px solid #00ff41; }
-    [data-theme="starter-developer"] .expired-badge { background: #ff0000; }
-    [data-theme="starter-developer"] .sub-tabs, [data-theme="starter-developer"] .search-bar, [data-theme="starter-developer"] .filter-tab { 
-      background: #0a0a0a; border: 1px solid #00ff41; 
-    }
-    [data-theme="starter-developer"] .sub-tab.active, [data-theme="starter-developer"] .filter-tab.active { background: #00ff41; color: #0a0a0a; }
-    [data-theme="starter-developer"] .fab-button { background: #00ff41; }
-    [data-theme="starter-developer"] .fab-button svg { color: #0a0a0a; }
-    [data-theme="starter-developer"] .bottom-nav { background: #0a0a0a; border-top: 1px solid #00ff41; }
-    [data-theme="starter-developer"] .json-editor { background: #000; border: 1px solid #00ff41; }
-
     body { font-family: var(--font-main); background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; }
-
-    .header {
-      background: var(--header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 100;
-    }
+    
+    .header { background: var(--header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .header h1 { font-size: 15px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; }
-    .header-logo { width: 22px; height: 22px; fill: white; }
-    .firebase-logo { font-size: 20px; }
     .user-info { display: flex; align-items: center; gap: 8px; }
     .user-details { text-align: right; }
-    .user-name { font-size: 11px; font-weight: 600; color: white; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .user-email { font-size: 8px; color: rgba(255,255,255,0.7); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
-    .header-btn { padding: 6px 12px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
-
-    .container { max-width: 800px; margin: 0 auto; padding: 12px; }
-
-    .card { background: var(--bg-card); border-radius: var(--card-radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
-    .card h3 { font-size: 14px; margin-bottom: 12px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
-
-    .login-card { max-width: 400px; margin: 30px auto; text-align: center; }
-
-    .info-box { background: var(--accent-light); padding: 10px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid var(--accent); text-align: left; }
-
-    .google-btn {
-      width: 100%; padding: 14px 20px; background: white; color: #333; border: 2px solid #ddd;
-      border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font-main);
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      transition: all 0.2s; margin-top: 15px;
-    }
-    .google-btn:hover { border-color: #4285f4; box-shadow: 0 4px 15px rgba(66,133,244,0.2); }
+    .user-name { font-size: 11px; font-weight: 600; color: white; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .user-email { font-size: 8px; color: rgba(255,255,255,0.7); max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+    .user-avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
+    .header-btn { padding: 5px 10px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; }
+    
+    .container { max-width: 800px; margin: 0 auto; padding: 10px; }
+    .card { background: var(--bg-card); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .card h3 { font-size: 14px; margin-bottom: 12px; color: var(--accent); }
+    
+    .login-card { max-width: 380px; margin: 30px auto; text-align: center; }
+    .info-box { background: var(--accent-light); padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--accent); text-align: left; }
+    .google-btn { width: 100%; padding: 14px; background: white; color: #333; border: 2px solid #ddd; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; }
+    .google-btn:hover { border-color: #4285f4; }
     .google-btn img { width: 20px; height: 20px; }
-    .google-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    .google-btn:disabled { opacity: 0.6; }
     .auth-error { background: rgba(231,76,60,0.15); color: var(--danger); padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; display: none; }
-    .auth-info { background: rgba(52,152,219,0.15); color: #3498db; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 11px; }
-
-    .stats-card { display: flex; justify-content: space-around; background: var(--bg-card); border-radius: var(--card-radius); padding: 15px; margin-bottom: 12px; box-shadow: var(--card-shadow); }
+    
+    .stats-card { display: flex; justify-content: space-around; background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
     .stat-item { text-align: center; }
-    .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
-    .stat-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
-
-    .sub-tabs { display: flex; background: var(--bg-secondary); border-radius: 10px; padding: 4px; margin-bottom: 12px; }
-    .sub-tab { flex: 1; padding: 10px; background: none; border: none; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; font-family: var(--font-main); }
-    .sub-tab.active { background: var(--accent); color: white; }
-
-    .search-bar { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
-    .search-bar svg { width: 18px; height: 18px; color: var(--text-secondary); }
-    .search-bar input { flex: 1; background: none; border: none; color: var(--text-primary); font-size: 13px; outline: none; font-family: var(--font-main); }
-
-    .filter-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-    .filter-tab { padding: 6px 12px; background: var(--bg-card); border: none; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 15px; font-family: var(--font-main); }
-    .filter-tab.active { background: var(--accent); color: white; }
-
-    /* Collection Selector */
-    .collection-selector { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-    .collection-btn { 
-      padding: 8px 16px; 
-      background: var(--bg-card); 
-      border: 2px solid var(--border); 
-      color: var(--text-secondary); 
-      font-size: 12px; 
-      font-weight: 600; 
-      cursor: pointer; 
-      border-radius: 20px; 
-      font-family: var(--font-main);
-      transition: all 0.2s;
-    }
-    .collection-btn.active { 
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); 
-      color: white; 
-      border-color: var(--accent);
-      box-shadow: 0 4px 15px rgba(255,107,53,0.3);
-    }
-    .collection-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
-
-    .section-title { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-
-    .device-grid { display: grid; gap: 10px; }
-
-    .device-card {
-      background: var(--bg-card); border-radius: var(--card-radius); padding: 12px; position: relative;
-      border-left: var(--card-border); box-shadow: var(--card-shadow); transition: transform 0.2s;
-    }
-    .device-card:hover { transform: translateX(3px); }
-    .device-card.expired { background: var(--bg-card-expired); border-left: var(--expired-border); }
-    .device-card.highlight { animation: pulseHighlight 0.5s ease 3; }
-    @keyframes pulseHighlight { 0%, 100% { box-shadow: var(--card-shadow); } 50% { box-shadow: 0 0 20px var(--accent); } }
-
-    .position-tag { position: absolute; top: 8px; right: 8px; background: var(--accent); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
-    .device-id { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 4px; word-break: break-all; font-family: var(--font-mono); }
-    .user-name-card { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
-    .key-value { font-size: 12px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; word-break: break-all; }
-
-    .meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
-    .expiry-text { color: var(--text-secondary); }
-    .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+    .stat-value { font-size: 20px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; }
+    
+    .search-bar { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border-radius: 25px; padding: 10px 14px; margin-bottom: 10px; border: 2px solid var(--border); }
+    .search-bar svg { width: 16px; height: 16px; color: var(--text-secondary); }
+    .search-bar input { flex: 1; background: none; border: none; color: var(--text-primary); font-size: 13px; outline: none; }
+    
+    .filter-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+    .filter-tab { padding: 6px 14px; background: var(--bg-card); border: 2px solid var(--border); color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 18px; }
+    .filter-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+    
+    .collection-selector { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .collection-btn { padding: 8px 16px; background: var(--bg-card); border: 2px solid var(--border); color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 20px; }
+    .collection-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+    
+    .section-title { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+    
+    .device-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    
+    .device-card { background: var(--bg-card); border-radius: 10px; padding: 10px; position: relative; border-left: 4px solid var(--accent); }
+    .device-card.expired { background: var(--bg-card-expired); border-left-color: var(--danger); }
+    
+    .position-tag { position: absolute; top: 6px; right: 6px; background: var(--accent); color: white; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 8px; }
+    .device-card.expired .position-tag { background: var(--danger); }
+    
+    .device-id { font-size: 9px; color: var(--accent); font-weight: 600; margin-bottom: 2px; word-break: break-all; font-family: var(--font-mono); padding-right: 30px; }
+    .device-card.expired .device-id { color: var(--danger); }
+    
+    .user-name-card { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    
+    .key-value { font-size: 10px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); padding: 5px 8px; border-radius: 5px; margin-bottom: 6px; cursor: pointer; word-break: break-all; text-align: center; }
+    .device-card.expired .key-value { background: rgba(231,76,60,0.1); color: var(--danger); }
+    
+    .meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 9px; margin-bottom: 6px; }
+    .expiry-text { color: var(--text-secondary); font-weight: 500; }
+    .status-badge { padding: 2px 6px; border-radius: 8px; font-size: 8px; font-weight: 600; }
     .status-badge.online { background: rgba(39,174,96,0.15); color: var(--success); }
     .status-badge.offline { background: rgba(231,76,60,0.15); color: var(--danger); }
-
-    .expired-badge { position: absolute; bottom: 8px; right: 8px; background: var(--danger); color: white; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 10px; }
-
-    .card-actions { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-    .action-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-    .action-btn svg { width: 16px; height: 16px; }
+    
+    .expired-badge { display: inline-block; background: var(--danger); color: white; font-size: 8px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-bottom: 6px; }
+    
+    .card-actions { display: flex; gap: 6px; align-items: center; }
+    .action-btn { flex: 1; padding: 6px; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .action-btn svg { width: 14px; height: 14px; }
     .action-btn.edit { background: rgba(52,152,219,0.15); color: #3498db; }
     .action-btn.delete { background: rgba(231,76,60,0.15); color: var(--danger); }
-    .action-btn.disable { background: rgba(243,156,18,0.15); color: var(--warning); }
-    .action-btn:hover { transform: scale(1.05); }
-
-    .json-editor { width: 100%; min-height: 300px; background: var(--bg-secondary); border: 2px solid var(--border); border-radius: 8px; padding: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); resize: vertical; }
-    .json-buttons { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-    .json-buttons button { flex: 1; min-width: 70px; padding: 10px; border: none; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
-    .json-buttons .save { background: var(--success); color: white; }
-    .json-buttons .format { background: #3498db; color: white; }
-    .json-buttons .copy { background: #9b59b6; color: white; }
-    .json-buttons .reset { background: #95a5a6; color: white; }
-
-    .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; }
-    .status { font-size: 11px; color: var(--text-secondary); }
-    .actions { display: flex; gap: 6px; }
-    .actions button { padding: 6px 10px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
-
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card);
-      display: flex; justify-content: space-around; align-items: center; padding: 8px 0 12px; border-top: 1px solid var(--border); z-index: 99;
-    }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-secondary); font-size: 10px; cursor: pointer; padding: 4px 12px; }
+    
+    .toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.3s; border-radius: 22px; }
+    .toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+    .toggle-switch input:checked + .toggle-slider { background-color: var(--success); }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(18px); }
+    
+    .sub-tabs { display: flex; background: var(--bg-secondary); border-radius: 10px; padding: 4px; margin-bottom: 10px; }
+    .sub-tab { flex: 1; padding: 8px; background: none; border: none; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 8px; }
+    .sub-tab.active { background: var(--accent); color: white; }
+    
+    .json-editor { width: 100%; min-height: 250px; background: var(--bg-secondary); border: 2px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-mono); font-size: 10px; color: var(--text-primary); resize: vertical; }
+    .json-buttons { display: flex; gap: 5px; margin-top: 8px; }
+    .json-buttons button { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; color: white; }
+    .json-buttons .save { background: var(--success); }
+    .json-buttons .format { background: #3498db; }
+    .json-buttons .copy { background: #9b59b6; }
+    .json-buttons .reset { background: #95a5a6; }
+    
+    .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 10px; }
+    .status { font-size: 10px; color: var(--text-secondary); }
+    .actions button { padding: 5px 10px; background: var(--accent); color: white; border: none; border-radius: 5px; font-size: 9px; font-weight: 600; cursor: pointer; }
+    
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); display: flex; justify-content: space-around; align-items: center; padding: 8px 0 12px; border-top: 1px solid var(--border); z-index: 99; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-secondary); font-size: 9px; cursor: pointer; padding: 4px 12px; }
     .nav-item.active { color: var(--accent); }
-    .nav-item svg { width: 22px; height: 22px; margin-bottom: 2px; }
-
-    .fab-button {
-      width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; margin-top: -25px; border: none;
-      transition: all 0.3s ease;
-    }
-    .fab-button svg { width: 24px; height: 24px; color: white; }
-
-    #topBtn {
-      position: fixed; right: 12px; bottom: 85px; width: 40px; height: 40px; border-radius: 50%;
-      background: var(--bg-card); border: 2px solid var(--border); color: var(--accent); font-size: 18px;
-      display: none; align-items: center; justify-content: center; z-index: 98; cursor: pointer;
-    }
-
-    .modal-bg {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
-      display: none; align-items: flex-start; justify-content: center; padding: 12vh 10px 20px; z-index: 10000; overflow-y: auto;
-    }
+    .nav-item svg { width: 20px; height: 20px; }
+    
+    .fab-button { width: 48px; height: 48px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; margin-top: -24px; border: none; }
+    .fab-button svg { width: 22px; height: 22px; color: white; }
+    
+    #topBtn { position: fixed; right: 10px; bottom: 80px; width: 36px; height: 36px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--border); color: var(--accent); font-size: 16px; display: none; align-items: center; justify-content: center; z-index: 98; cursor: pointer; }
+    
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display: none; align-items: flex-start; justify-content: center; padding: 6vh 12px 20px; z-index: 10000; overflow-y: auto; }
     .modal-bg.show { display: flex; }
-    .modal-box { width: 100%; max-width: 420px; background: var(--bg-card); border-radius: 16px; overflow: visible; }
-    .modal-header { padding: 14px 16px; background: var(--header-bg); display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0; }
-    .modal-title { font-size: 14px; font-weight: 600; color: white; }
-    .modal-close { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 16px; cursor: pointer; }
-    .modal-body { padding: 16px; background: var(--bg-card); border-radius: 0 0 16px 16px; }
-
-    .modal-input-group { margin-bottom: 12px; }
-    .modal-input-group label { display: block; color: var(--accent); font-weight: 600; margin-bottom: 5px; font-size: 11px; }
-    .modal-input { width: 100%; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); color: var(--text-primary); border-radius: 8px; font-size: 13px; outline: none; font-family: var(--font-main); }
+    .modal-box { width: 100%; max-width: 380px; background: var(--bg-card); border-radius: 14px; }
+    .modal-header { padding: 12px 14px; background: var(--header-bg); display: flex; justify-content: space-between; align-items: center; border-radius: 14px 14px 0 0; }
+    .modal-title { font-size: 13px; font-weight: 600; color: white; }
+    .modal-close { width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 14px; cursor: pointer; }
+    .modal-body { padding: 14px; }
+    
+    .modal-input-group { margin-bottom: 10px; }
+    .modal-input-group label { display: block; color: var(--accent); font-weight: 600; margin-bottom: 4px; font-size: 10px; }
+    .modal-input { width: 100%; padding: 9px 10px; background: white; border: 2px solid var(--border); color: var(--text-primary); border-radius: 7px; font-size: 12px; outline: none; }
     .modal-input:focus { border-color: var(--accent); }
     .modal-row { display: flex; gap: 8px; }
     .modal-row .modal-input-group { flex: 1; }
-
-    .quick-btn { flex: 1; padding: 8px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font-main); }
-
-    .checkbox-label { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg-input); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 12px; color: var(--text-primary); }
-    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
-
+    
+    .quick-btn { padding: 7px 10px; background: var(--accent); color: white; border: none; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer; }
+    .expiry-inline { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+    
+    .checkbox-label { display: flex; align-items: center; gap: 8px; padding: 9px 10px; background: white; border: 2px solid var(--border); border-radius: 7px; cursor: pointer; font-size: 11px; }
+    .checkbox-label input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); }
+    
     .modal-buttons { display: flex; gap: 8px; margin-top: 12px; }
-    .modal-save-btn { flex: 1; padding: 12px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-main); }
-    .modal-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .modal-cancel-btn { padding: 12px 16px; background: #666; color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-main); }
-
-    .spinner { width: 14px; height: 14px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; margin-right: 6px; }
+    .modal-save-btn { flex: 2; padding: 11px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .modal-save-btn:disabled { opacity: 0.6; }
+    .modal-cancel-btn { flex: 1; padding: 11px; background: #888; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+    
+    .spinner { width: 12px; height: 12px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; margin-right: 5px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 500; opacity: 0; transition: transform 0.3s, opacity 0.3s; z-index: 10001; }
+    
+    .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 500; opacity: 0; transition: all 0.3s; z-index: 10001; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    .empty-state { text-align: center; padding: 40px 15px; color: var(--text-secondary); grid-column: 1 / -1; }
-    .empty-state p { font-size: 13px; margin-bottom: 12px; }
-    .empty-state button { padding: 12px 24px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); border: none; border-radius: 25px; font-weight: 700; color: white; cursor: pointer; font-family: var(--font-main); font-size: 13px; }
-
-    .suggestions { 
-      position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-input); border: 2px solid var(--accent); 
-      border-radius: 8px; max-height: 150px; overflow-y: auto; z-index: 1000; display: none; margin-top: 4px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    
+    .empty-state { text-align: center; padding: 30px 15px; color: var(--text-secondary); grid-column: 1 / -1; }
+    .empty-state button { padding: 10px 20px; background: var(--accent); border: none; border-radius: 20px; font-weight: 700; color: white; cursor: pointer; margin-top: 10px; font-size: 12px; }
+    
+    .suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid var(--accent); border-radius: 7px; max-height: 120px; overflow-y: auto; z-index: 1000; display: none; margin-top: 3px; }
     .suggestions.show { display: block; }
-    .suggestion-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-primary); transition: background 0.2s; }
-    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 11px; }
     .suggestion-item:hover { background: var(--accent-light); }
-
+    
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-
-    /* Theme Selector */
-    .theme-selector { margin-top: 15px; }
+    
     .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
-    .theme-option {
-      padding: 12px 10px; border-radius: 10px; cursor: pointer; text-align: center; font-size: 11px; font-weight: 600;
-      border: 2px solid transparent; transition: all 0.2s;
-    }
-    .theme-option:hover { transform: scale(1.02); }
-    .theme-option.active { border-color: white; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
-    .theme-starter { background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; }
-    .theme-starter-pro { background: linear-gradient(135deg, #ffc107, #ff9800); color: #111; }
-    .theme-starter-max { background: linear-gradient(135deg, #00f5ff, #0080ff); color: #111; }
-    .theme-starter-developer { background: linear-gradient(135deg, #00ff41, #00aa2a); color: #111; }
-
-    /* Warning messages */
-    .warning-msg { background: rgba(231,76,60,0.15); color: var(--danger); padding: 8px 12px; border-radius: 6px; font-size: 11px; margin-top: 6px; display: none; }
-
-    /* Modal positioning fix */
-    #keyModal.modal-bg { padding: 6vh 16px 20px; }
-    #keyModal .modal-body { padding: 16px 20px; }
-    #keyModal .modal-input-group { margin-bottom: 14px; }
-    #keyModal .modal-row { display: flex; gap: 12px; }
-    #keyModal .modal-row .modal-input-group { flex: 1; }
-    #keyModal .expiry-inline { display: flex; align-items: center; gap: 8px; }
-    #keyModal .expiry-inline .modal-input { flex: 2.2; }
-    #keyModal .expiry-inline .quick-btn { flex: 1; height: 42px; }
-    #keyModal label.checkbox-label, #keyModal label.inline-checkbox { display: flex; align-items: center; justify-content: flex-start; height: 42px; padding: 0 12px; gap: 10px; box-sizing: border-box; }
-    #keyModal label.checkbox-label input[type="checkbox"] { margin: 0; align-self: center; }
-    #keyModal .modal-buttons { display: flex; gap: 12px; margin-top: 16px; }
-    #keyModal .modal-save-btn { flex: 2; height: 46px; }
-    #keyModal .modal-cancel-btn { flex: 1; height: 46px; }
-    #keyModal .modal-box { width: 100%; max-width: 420px; margin: 0 auto; }
-    #keyModal.modal-bg { padding-top: 6vh !important; padding-left: 30px !important; padding-right: 30px !important; padding-bottom: 20px !important; }
-    #keyModal .modal-body { padding: 12px 18px !important; }
-    #keyModal .modal-input-group { margin-bottom: 10px !important; }
-    #keyModal .modal-input { padding: 8px 10px !important; font-size: 12px !important; }
-    #keyModal .expiry-inline .quick-btn, #keyModal .modal-save-btn, #keyModal .modal-cancel-btn { height: 38px !important; }
-    #keyModal label.checkbox-label { height: 38px !important; padding: 0 10px !important; }
-    #keyModal .modal-buttons { margin-top: 10px !important; }
-
-    /* Connection status */
-    .connection-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 15px;
-      font-size: 10px;
-      font-weight: 600;
-    }
-    .connection-status.connected { background: rgba(39,174,96,0.15); color: var(--success); }
-    .connection-status.disconnected { background: rgba(231,76,60,0.15); color: var(--danger); }
-    .connection-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .connection-status.connected .connection-dot { background: var(--success); animation: pulse 2s infinite; }
-    .connection-status.disconnected .connection-dot { background: var(--danger); }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-    /* Verified badge */
-    .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(39,174,96,0.15);
-      color: var(--success);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 9px;
-      font-weight: 600;
-    }
+    .theme-option { padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; font-size: 10px; font-weight: 600; border: 2px solid transparent; }
+    .theme-option.active { border-color: white; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+    .theme-cream { background: linear-gradient(135deg, #c4956a, #a67c52); color: white; }
+    .theme-gold { background: linear-gradient(135deg, #ffc107, #ff9800); color: #111; }
+    .theme-cyber { background: linear-gradient(135deg, #00f5ff, #0080ff); color: #111; }
+    .theme-matrix { background: linear-gradient(135deg, #00ff41, #00aa2a); color: #111; }
+    
+    .warning-msg { background: rgba(231,76,60,0.15); color: var(--danger); padding: 6px; border-radius: 5px; font-size: 10px; margin-top: 5px; display: none; }
+    
+    [data-theme="gold"] { --bg-primary: #1a1a1a; --bg-secondary: #0d0d0d; --bg-card: #252525; --accent: #ffc107; --text-primary: #f5f5f5; --text-secondary: #aaa; --border: #333; --header-bg: linear-gradient(135deg, #ffc107, #ff9800); }
+    [data-theme="gold"] .header h1 { color: #111; }
+    [data-theme="cyber"] { --bg-primary: #0a0e1a; --bg-secondary: #050810; --bg-card: #0d1220; --accent: #00f5ff; --text-primary: #e0f7ff; --text-secondary: #7fdbff; --border: #1a3a4a; --header-bg: linear-gradient(135deg, #00f5ff, #0080ff); }
+    [data-theme="cyber"] .header h1 { color: #0a0e1a; }
+    [data-theme="matrix"] { --bg-primary: #0a0a0a; --bg-secondary: #050505; --bg-card: #0f0f0f; --accent: #00ff41; --text-primary: #00ff41; --text-secondary: #00aa2a; --border: #00ff41; --header-bg: linear-gradient(135deg, #00ff41, #00aa2a); }
+    [data-theme="matrix"] .header h1 { color: #0a0a0a; }
   </style>
 </head>
-<body data-theme="starter">
-
+<body data-theme="cream">
   <div class="header">
-    <h1>
-      <span class="firebase-logo">🔥</span>
-      Firebase Admin Panel
-    </h1>
+    <h1>🔥 Firebase Admin</h1>
     <div class="user-info" id="userInfo" style="display:none;">
       <div class="user-details">
         <div class="user-name" id="userName"></div>
@@ -462,35 +198,23 @@
   <div class="container">
     <div id="loginSection">
       <div class="card login-card">
-        <h3>🔥 Firebase Admin Login</h3>
+        <h3>🔐 Admin Login</h3>
         <div class="info-box">
-          <p style="margin:0;font-size:11px;"><strong>🔐 Authorized Access Only</strong></p>
-          <p style="margin:5px 0 0;font-size:10px;color:var(--text-secondary);">
-            Only <strong>www.webomprakashjat@gmail.com</strong> can access this panel.
-          </p>
+          <p style="margin:0;font-size:12px;"><strong>🔒 Authorized Access Only</strong></p>
+          <p style="margin:5px 0 0;font-size:11px;color:var(--text-secondary);">Only authorized administrators can access this panel.</p>
         </div>
-        
-        <div class="auth-info">
-          <strong>📋 Login Process:</strong><br>
-          1. Click "Sign in with Google"<br>
-          2. Select your authorized Google account<br>
-          3. Access granted automatically
-        </div>
-
         <button class="google-btn" id="googleLoginBtn">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
           Sign in with Google
         </button>
-
         <div class="auth-error" id="authError"></div>
       </div>
     </div>
 
     <div id="mainPanel" style="display:none;">
       <div class="tab-content active" id="tab-devices">
-        <!-- Collection Selector -->
-        <div class="section-title">📁 Select Collection</div>
-        <div class="collection-selector" id="collectionSelector">
+        <div class="section-title">📁 Collection</div>
+        <div class="collection-selector">
           <button class="collection-btn active" data-collection="Camera">📷 Camera</button>
           <button class="collection-btn" data-collection="Gallery">🖼️ Gallery</button>
           <button class="collection-btn" data-collection="KycRndm">🔐 KycRndm</button>
@@ -517,7 +241,7 @@
             <button class="filter-tab" data-filter="active">✅ Active</button>
             <button class="filter-tab" data-filter="expired">⚠️ Expired</button>
           </div>
-          <div class="section-title">Device Keys <span id="positionInfo" style="font-weight:normal;">(Total: 0 keys)</span></div>
+          <div class="section-title">Device Keys</div>
           <div id="dataList" class="device-grid"></div>
         </div>
 
@@ -534,28 +258,19 @@
 
       <div class="tab-content" id="tab-settings">
         <div class="card">
-          <h3>🔥 Firebase Status</h3>
+          <h3>🔥 Status</h3>
           <div class="status-bar">
             <div class="status" id="firebaseStatus">⚡ Connected</div>
-            <div class="actions">
-              <button id="refreshDataBtn">🔄 Refresh</button>
-            </div>
-          </div>
-          <div class="info-box" style="margin-top:10px;">
-            <p style="margin:0;font-size:11px;"><strong>Database URL:</strong></p>
-            <p style="margin:5px 0 0;font-size:10px;word-break:break-all;color:var(--text-secondary);">
-              https://opjat-2005-default-rtdb.asia-southeast1.firebasedatabase.app
-            </p>
+            <div class="actions"><button id="refreshDataBtn">🔄</button></div>
           </div>
         </div>
-
-        <div class="card theme-selector">
-          <h3>🎨 Select Theme</h3>
+        <div class="card">
+          <h3>🎨 Theme</h3>
           <div class="theme-grid">
-            <div class="theme-option theme-starter active" data-theme="starter">🔥 Firebase</div>
-            <div class="theme-option theme-starter-pro" data-theme="starter-pro">🌟 Pro Gold</div>
-            <div class="theme-option theme-starter-max" data-theme="starter-max">⚡ Cyber</div>
-            <div class="theme-option theme-starter-developer" data-theme="starter-developer">💻 Matrix</div>
+            <div class="theme-option theme-cream active" data-theme="cream">☀️ Cream</div>
+            <div class="theme-option theme-gold" data-theme="gold">🌟 Gold</div>
+            <div class="theme-option theme-cyber" data-theme="cyber">⚡ Cyber</div>
+            <div class="theme-option theme-matrix" data-theme="matrix">💻 Matrix</div>
           </div>
         </div>
       </div>
@@ -578,101 +293,72 @@
 
   <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-  <!-- Add/Edit Key Modal -->
   <div class="modal-bg" id="keyModal">
     <div class="modal-box">
       <div class="modal-header">
-        <div class="modal-title" id="modalTitle">➕ Add New License Key</div>
+        <div class="modal-title" id="modalTitle">➕ Add Key</div>
         <button class="modal-close" onclick="closeKeyModal()">×</button>
       </div>
       <div class="modal-body">
-        <!-- Device ID -->
         <div class="modal-input-group">
           <label>📱 Device ID</label>
-          <input id="deviceId" placeholder="Device ID" type="text" class="modal-input" oninput="checkDeviceIdDuplicate()" />
-          <div class="warning-msg" id="deviceIdWarning">⚠️ Device ID already exists! Will update existing entry.</div>
+          <input id="deviceId" placeholder="Device ID" class="modal-input" oninput="checkDeviceIdDuplicate()" />
+          <div class="warning-msg" id="deviceIdWarning">⚠️ Exists!</div>
         </div>
-
-        <!-- Key + Generate -->
         <div class="modal-input-group">
-          <label>🔑 License Key</label>
-          <div style="display:flex;gap:6px;">
-            <input id="key" placeholder="License key" type="text" class="modal-input" style="flex:1;" oninput="checkKeyDuplicate()" />
-            <button class="quick-btn" onclick="generateRandomKey()" style="flex:0 0 70px;">🎲 Gen</button>
+          <label>🔑 Key</label>
+          <div style="display:flex;gap:5px;">
+            <input id="key" placeholder="License key" class="modal-input" style="flex:1;" oninput="checkKeyDuplicate()" />
+            <button class="quick-btn" onclick="generateRandomKey()">🎲</button>
           </div>
-          <div class="warning-msg" id="keyWarning">⚠️ This key already exists! Please generate a new one.</div>
+          <div class="warning-msg" id="keyWarning">⚠️ Exists!</div>
         </div>
-
-        <!-- Expiry + Quick buttons -->
         <div class="modal-input-group">
-          <label>📅 Expiry Date</label>
+          <label>📅 Expiry</label>
           <div class="expiry-inline">
-            <input id="expiry" placeholder="dd-mm-yyyy" type="text" class="modal-input" />
+            <input id="expiry" placeholder="dd-mm-yyyy" class="modal-input" style="flex:1;" />
             <button class="quick-btn" onclick="setQuickDate(7)">7d</button>
             <button class="quick-btn" onclick="setQuickDate(15)">15d</button>
             <button class="quick-btn" onclick="setQuickDate(30)">30d</button>
           </div>
         </div>
-
         <div class="modal-input-group">
           <div class="expiry-inline">
             <button class="quick-btn" onclick="adjustExpiry(-1)">−1</button>
             <button class="quick-btn" onclick="adjustExpiry(1)">+1</button>
-            <label class="checkbox-label inline-checkbox">
+            <label class="checkbox-label" style="flex:1;">
               <input id="allowOffline" type="checkbox" />
-              <span>✓ Allow Offline</span>
+              <span>Allow Offline</span>
             </label>
           </div>
         </div>
-
-        <!-- User + Position -->
         <div class="modal-row">
           <div class="modal-input-group" style="position:relative;">
-            <label>👤 User Name</label>
-            <input id="username" placeholder="User name" type="text" class="modal-input" autocomplete="off" />
+            <label>👤 User</label>
+            <input id="username" placeholder="Name" class="modal-input" autocomplete="off" />
             <div id="userSuggestions" class="suggestions"></div>
           </div>
           <div class="modal-input-group" style="position:relative;">
-            <label>📍 Position</label>
-            <input id="positionInput" placeholder="#" type="text" class="modal-input" autocomplete="off" />
+            <label>📍 Pos</label>
+            <input id="positionInput" placeholder="#" class="modal-input" autocomplete="off" />
             <div id="positionSuggestions" class="suggestions"></div>
           </div>
         </div>
-
-        <span id="positionInfoModal" style="display:block;margin:6px 0;color:var(--text-secondary);font-size:10px;">(Total: 0 keys)</span>
-
-        <!-- Buttons -->
         <div class="modal-buttons">
-          <button class="modal-save-btn" id="saveBtn">🔥 Save to Firebase</button>
-          <button class="modal-cancel-btn" onclick="closeKeyModal()">✕ Cancel</button>
+          <button class="modal-save-btn" id="saveBtn">🔥 Save</button>
+          <button class="modal-cancel-btn" onclick="closeKeyModal()">✕</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast">Copied!</div>
+  <div class="toast" id="toast"></div>
 
-  <!-- Saved Card Popup -->
-  <div class="modal-bg" id="savedCardModal">
-    <div class="modal-box" style="max-width:340px;">
-      <div class="modal-header">
-        <div class="modal-title" id="savedCardTitle">✅ Key Saved!</div>
-        <button class="modal-close" onclick="closeSavedCardModal()">×</button>
-      </div>
-      <div class="modal-body" style="padding:12px;">
-        <div id="savedCardPreview"></div>
-        <button class="modal-save-btn" onclick="closeSavedCardModal()" style="margin-top:12px; width:100%">👍 OK</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyA1FIDLD-AKVlEz-AJiweYVdxhIP0Rnijk",
       authDomain: "opjat-2005.firebaseapp.com",
@@ -683,188 +369,39 @@
       appId: "1:2500552965:web:4f6664a366967a2525af6c"
     };
 
-    // Authorized Email
     const AUTHORIZED_EMAIL = "www.webomprakashjat@gmail.com";
-
-    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const database = firebase.database();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    let currentUser = null;
-    let currentCollection = 'Camera';
-    let currentData = [];
-    let allDataArray = [];
-    let currentUpdateId = null;
-    let currentFilter = 'all';
+    let currentUser = null, currentCollection = 'Camera', currentData = [], allDataArray = [], currentUpdateId = null, currentFilter = 'all';
 
-    function showToast(msg) { 
-      const t = document.getElementById('toast'); 
-      t.textContent = msg; 
-      t.classList.add('show'); 
-      setTimeout(() => t.classList.remove('show'), 2000); 
-    }
+    const showToast = msg => { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); };
+    const isExpired = d => { if (!d) return false; const p = d.split('-'); if (p.length !== 3) return false; return new Date(+p[2], +p[1]-1, +p[0]) < new Date(); };
+    const formatDate = d => `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+    
+    window.setQuickDate = days => { const d = new Date(); d.setDate(d.getDate() + days); document.getElementById('expiry').value = formatDate(d); };
+    window.adjustExpiry = days => { const i = document.getElementById('expiry'); if (!i.value) return; const p = i.value.split('-'); if (p.length !== 3) return; const d = new Date(+p[2], +p[1]-1, +p[0]); d.setDate(d.getDate() + days); i.value = formatDate(d); };
+    window.generateRandomKey = () => { const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", e = allDataArray.map(x => x.key); let k; do { k = ""; for (let i = 0; i < 12; i++) k += c.charAt(Math.floor(Math.random() * c.length)); } while (e.includes(k)); document.getElementById('key').value = k; checkKeyDuplicate(); };
+    
+    function checkDeviceIdDuplicate() { const d = document.getElementById('deviceId').value.trim(), w = document.getElementById('deviceIdWarning'); if (!d || currentUpdateId) { w.style.display = 'none'; return; } w.style.display = allDataArray.find(i => (i.device_id || i.id) === d) ? 'block' : 'none'; }
+    function checkKeyDuplicate() { const k = document.getElementById('key').value.trim(), w = document.getElementById('keyWarning'); if (!k) { w.style.display = 'none'; return false; } let o = null; if (currentUpdateId) { const i = allDataArray.find(x => (x.device_id || x.id) === currentUpdateId); if (i) o = i.key; } if (currentUpdateId && k === o) { w.style.display = 'none'; return false; } const e = allDataArray.find(i => i.key === k && (i.device_id || i.id) !== currentUpdateId); w.style.display = e ? 'block' : 'none'; return !!e; }
+    
+    window.copyKey = k => { navigator.clipboard.writeText(k); showToast('✅ Copied!'); };
+    
+    function openKeyModal() { currentUpdateId = null; ['deviceId','key','expiry','username'].forEach(i => document.getElementById(i).value = ''); document.getElementById('allowOffline').checked = false; document.getElementById('positionInput').value = allDataArray.length + 1; document.getElementById('modalTitle').textContent = '➕ Add Key'; ['deviceIdWarning','keyWarning'].forEach(i => document.getElementById(i).style.display = 'none'); document.getElementById('keyModal').classList.add('show'); }
+    function closeKeyModal() { document.getElementById('keyModal').classList.remove('show'); }
+    function switchToTab(t) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById(`tab-${t}`).classList.add('active'); document.getElementById(`nav${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.add('active'); }
 
-    function showAuthError(msg) {
-      const el = document.getElementById('authError');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
-
-    function hideAuthError() {
-      document.getElementById('authError').style.display = 'none';
-    }
-
-    function isExpired(dateStr) {
-      if (!dateStr) return false;
-      const parts = dateStr.split('-');
-      if (parts.length !== 3) return false;
-      const expDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-      return expDate < new Date();
-    }
-
-    function formatDate(d) { 
-      return String(d.getDate()).padStart(2,'0') + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + d.getFullYear(); 
-    }
-
-    window.setQuickDate = function(days) { 
-      const d = new Date(); 
-      d.setDate(d.getDate() + days); 
-      document.getElementById('expiry').value = formatDate(d); 
-    }
-
-    window.adjustExpiry = function(days) { 
-      const input = document.getElementById('expiry'); 
-      if (!input.value) return; 
-      const parts = input.value.split('-'); 
-      if (parts.length !== 3) return; 
-      const d = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0])); 
-      if (isNaN(d.getTime())) return; 
-      d.setDate(d.getDate() + days); 
-      input.value = formatDate(d); 
-    }
-
-    window.generateRandomKey = function() { 
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; 
-      const existing = allDataArray.map(x => x.key); 
-      let key = ""; 
-      const lens = [11, 12, 13]; 
-      do { 
-        const len = lens[Math.floor(Math.random() * lens.length)]; 
-        key = ""; 
-        for (let i = 0; i < len; i++) key += chars.charAt(Math.floor(Math.random() * chars.length)); 
-      } while (existing.includes(key)); 
-      document.getElementById('key').value = key; 
-      checkKeyDuplicate(); 
-    }
-
-    function checkDeviceIdDuplicate() {
-      const deviceId = document.getElementById('deviceId').value.trim();
-      const warning = document.getElementById('deviceIdWarning');
-      if (!deviceId || currentUpdateId) { warning.style.display = 'none'; return; }
-      const exists = allDataArray.find(i => (i.device_id || i.id) === deviceId);
-      if (exists) { warning.style.display = 'block'; } 
-      else { warning.style.display = 'none'; }
-    }
-
-    function checkKeyDuplicate() {
-      const key = document.getElementById('key').value.trim();
-      const warning = document.getElementById('keyWarning');
-      if (!key) { warning.style.display = 'none'; return false; }
-      
-      let originalKey = null;
-      if (currentUpdateId) {
-        const originalItem = allDataArray.find(i => (i.device_id || i.id) === currentUpdateId);
-        if (originalItem) originalKey = originalItem.key;
-      }
-      
-      const exists = allDataArray.find(i => {
-        const itemId = i.device_id || i.id;
-        const isSameItem = currentUpdateId && itemId === currentUpdateId;
-        return i.key === key && !isSameItem;
-      });
-      
-      if (currentUpdateId && key === originalKey) {
-        warning.style.display = 'none';
-        return false;
-      }
-      
-      if (exists) { warning.style.display = 'block'; return true; } 
-      else { warning.style.display = 'none'; return false; }
-    }
-
-    window.copyKey = function(key) { 
-      navigator.clipboard.writeText(key); 
-      showToast('✅ Key copied!'); 
-    }
-
-    function scrollToElement(el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function highlightElement(el) {
-      el.classList.add('highlight');
-      setTimeout(() => el.classList.remove('highlight'), 1500);
-    }
-
-    function openKeyModal() {
-      currentUpdateId = null;
-      document.getElementById('deviceId').value = '';
-      document.getElementById('key').value = '';
-      document.getElementById('expiry').value = '';
-      document.getElementById('username').value = '';
-      document.getElementById('allowOffline').checked = false;
-      document.getElementById('positionInput').value = allDataArray.length + 1;
-      document.getElementById('modalTitle').innerHTML = '➕ Add New License Key';
-      document.getElementById('deviceIdWarning').style.display = 'none';
-      document.getElementById('keyWarning').style.display = 'none';
-      document.getElementById('positionInfoModal').textContent = `(Total: ${allDataArray.length} keys)`;
-      document.getElementById('keyModal').classList.add('show');
-    }
-
-    function closeKeyModal() {
-      document.getElementById('keyModal').classList.remove('show');
-    }
-
-    function switchToTab(tab) {
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById(`tab-${tab}`).classList.add('active');
-      document.getElementById(`nav${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
-    }
-
-    // Google Sign In
     async function signInWithGoogle() {
-      const btn = document.getElementById('googleLoginBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="spinner"></span> Signing in...';
-      hideAuthError();
-
+      const b = document.getElementById('googleLoginBtn'); b.disabled = true; b.innerHTML = '<span class="spinner"></span> Signing in...';
+      document.getElementById('authError').style.display = 'none';
       try {
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-
-        // Check if email is authorized
-        if (user.email !== AUTHORIZED_EMAIL) {
-          await auth.signOut();
-          showAuthError(`❌ Access Denied! Only ${AUTHORIZED_EMAIL} is authorized.`);
-          btn.disabled = false;
-          btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Sign in with Google';
-          return;
-        }
-
-        // Authorized user
-        currentUser = user;
-        showMainPanel();
-        showToast('✅ Login successful!');
-
-      } catch (error) {
-        console.error('Login error:', error);
-        showAuthError('❌ Login failed: ' + error.message);
-        btn.disabled = false;
-        btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Sign in with Google';
-      }
+        const r = await auth.signInWithPopup(provider);
+        if (r.user.email !== AUTHORIZED_EMAIL) { await auth.signOut(); document.getElementById('authError').textContent = '❌ Access Denied!'; document.getElementById('authError').style.display = 'block'; b.disabled = false; b.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Sign in with Google'; return; }
+        currentUser = r.user; showMainPanel(); showToast('✅ Login!');
+      } catch (e) { document.getElementById('authError').textContent = '❌ ' + e.message; document.getElementById('authError').style.display = 'block'; b.disabled = false; b.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Sign in with Google'; }
     }
 
     function showMainPanel() {
@@ -872,438 +409,144 @@
       document.getElementById('mainPanel').style.display = 'block';
       document.getElementById('bottomNav').style.display = 'flex';
       document.getElementById('userInfo').style.display = 'flex';
-
-      // Set user info
       document.getElementById('userName').textContent = currentUser.displayName || 'Admin';
       document.getElementById('userEmail').textContent = currentUser.email;
-      document.getElementById('userAvatar').src = currentUser.photoURL || 'https://via.placeholder.com/32';
-
-      // Load data
+      document.getElementById('userAvatar').src = currentUser.photoURL || '';
       loadCollectionData();
     }
 
-    async function signOut() {
-      if (confirm('Logout from Firebase?')) {
-        await auth.signOut();
-        currentUser = null;
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('mainPanel').style.display = 'none';
-        document.getElementById('bottomNav').style.display = 'none';
-        document.getElementById('userInfo').style.display = 'none';
-        showToast('👋 Logged out!');
-      }
+    async function signOut() { if (confirm('Logout?')) { await auth.signOut(); location.reload(); } }
+    auth.onAuthStateChanged(u => { if (u && u.email === AUTHORIZED_EMAIL) { currentUser = u; showMainPanel(); } });
+
+    function loadCollectionData() {
+      document.getElementById('firebaseStatus').textContent = '🔄 Loading...';
+      const ref = database.ref(currentCollection); ref.off();
+      ref.on('value', s => {
+        const d = s.val();
+        if (Array.isArray(d)) currentData = d.filter(i => i !== null);
+        else if (d && typeof d === 'object') currentData = Object.keys(d).map(k => ({ id: k, ...d[k] }));
+        else currentData = [];
+        allDataArray = currentData; displayData();
+        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
+        document.getElementById('firebaseStatus').textContent = '✅ Connected';
+      });
     }
 
-    // Check auth state on load
-    auth.onAuthStateChanged((user) => {
-      if (user && user.email === AUTHORIZED_EMAIL) {
-        currentUser = user;
-        showMainPanel();
-      }
-    });
-
-    // Firebase Database Functions
-    async function loadCollectionData() {
-      try {
-        document.getElementById('firebaseStatus').innerHTML = '🔄 Loading...';
-        
-        const collectionRef = database.ref(currentCollection);
-        
-        // Remove previous listener
-        collectionRef.off();
-        
-        // Set up realtime listener
-        collectionRef.on('value', (snapshot) => {
-          const data = snapshot.val();
-          
-          if (data && Array.isArray(data)) {
-            currentData = data.filter(item => item !== null);
-          } else if (data && typeof data === 'object') {
-            currentData = Object.keys(data).map(k => ({ id: k, ...data[k] }));
-          } else {
-            currentData = [];
-          }
-          
-          allDataArray = currentData;
-          displayData();
-          document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-          document.getElementById('firebaseStatus').innerHTML = '✅ Connected';
-        }, (error) => {
-          console.error('Database error:', error);
-          document.getElementById('firebaseStatus').innerHTML = '❌ Error';
-          showToast('❌ Database error!');
-        });
-
-      } catch (error) {
-        console.error('Load error:', error);
-        document.getElementById('firebaseStatus').innerHTML = '❌ Error';
-        showToast('❌ Load failed!');
-      }
+    async function saveData() {
+      document.getElementById('firebaseStatus').textContent = '📤 Saving...';
+      try { await database.ref(currentCollection).set(currentData); document.getElementById('firebaseStatus').textContent = '✅ Saved'; return true; }
+      catch (e) { alert('❌ ' + e.message); document.getElementById('firebaseStatus').textContent = '❌ Error'; return false; }
     }
 
-    async function saveDataToFirebase(msg = 'Update') {
-      try {
-        document.getElementById('firebaseStatus').innerHTML = '📤 Saving...';
-        
-        const collectionRef = database.ref(currentCollection);
-        await collectionRef.set(currentData);
-        
-        document.getElementById('firebaseStatus').innerHTML = '✅ Saved';
-        return true;
-      } catch (error) {
-        console.error('Save error:', error);
-        alert('❌ Save failed: ' + error.message);
-        document.getElementById('firebaseStatus').innerHTML = '❌ Error';
-        return false;
-      }
-    }
+    function displayData(s = '') {
+      const l = document.getElementById('dataList'); l.innerHTML = '';
+      let t = allDataArray.length, a = 0, e = 0;
+      allDataArray.forEach(i => { if (isExpired(i.expirydate)) e++; else a++; });
+      document.getElementById('totalCount').textContent = t;
+      document.getElementById('activeCount').textContent = a;
+      document.getElementById('expiredCount').textContent = e;
 
-    function displayData(searchTerm = '', highlightId = null) {
-      const list = document.getElementById('dataList');
-      list.innerHTML = '';
+      let f = allDataArray;
+      if (currentFilter === 'active') f = f.filter(i => !isExpired(i.expirydate));
+      else if (currentFilter === 'expired') f = f.filter(i => isExpired(i.expirydate));
+      if (s) { const sl = s.toLowerCase(); f = f.filter(i => (i.device_id||i.id||'').toLowerCase().includes(sl) || (i.user||'').toLowerCase().includes(sl) || (i.key||'').toLowerCase().includes(sl)); }
 
-      let total = allDataArray.length, active = 0, expired = 0;
-      allDataArray.forEach(i => { if (isExpired(i.expirydate)) expired++; else active++; });
+      if (!f.length) { l.innerHTML = '<div class="empty-state"><p>No keys</p><button onclick="openKeyModal()">➕ Add</button></div>'; return; }
 
-      document.getElementById('totalCount').textContent = total;
-      document.getElementById('activeCount').textContent = active;
-      document.getElementById('expiredCount').textContent = expired;
-      document.getElementById('positionInfo').textContent = `(Total: ${total} keys)`;
-
-      let filtered = allDataArray;
-      if (currentFilter === 'active') filtered = allDataArray.filter(i => !isExpired(i.expirydate));
-      else if (currentFilter === 'expired') filtered = allDataArray.filter(i => isExpired(i.expirydate));
-
-      if (searchTerm) {
-        const s = searchTerm.toLowerCase();
-        filtered = filtered.filter(i => {
-          const did = (i.device_id || i.id || '').toLowerCase();
-          const user = (i.user || '').toLowerCase();
-          const key = (i.key || '').toLowerCase();
-          return did.includes(s) || user.includes(s) || key.includes(s);
-        });
-      }
-
-      if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state"><p>No keys found</p><button onclick="openKeyModal()">➕ Add New Key</button></div>`;
-        return;
-      }
-
-      filtered.forEach((item) => {
-        const deviceId = item.device_id || item.id || 'Unknown';
-        const exp = isExpired(item.expirydate);
-        const pos = allDataArray.findIndex(d => (d.device_id || d.id) === deviceId) + 1;
-
+      f.forEach(item => {
+        const did = item.device_id || item.id || '?', exp = isExpired(item.expirydate), pos = allDataArray.findIndex(d => (d.device_id||d.id) === did) + 1, en = !exp;
         const div = document.createElement('div');
         div.className = 'device-card' + (exp ? ' expired' : '');
-        div.id = `card-${deviceId}`;
         div.innerHTML = `
           <div class="position-tag">#${pos}</div>
-          <div class="device-id">${deviceId}</div>
+          <div class="device-id">${did}</div>
           <div class="user-name-card">${item.user || 'N/A'}</div>
-          <div class="key-value" onclick="copyKey('${item.key || ''}')">${item.key || 'N/A'}</div>
+          <div class="key-value" onclick="copyKey('${item.key||''}')">${item.key || 'N/A'}</div>
           <div class="meta-row">
             <span class="expiry-text">${item.expirydate || 'N/A'}</span>
-            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'Offline' : 'Online'}</span>
+            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'OFFLINE' : 'ONLINE'}</span>
           </div>
           ${exp ? '<div class="expired-badge">⚠️ EXPIRED</div>' : ''}
           <div class="card-actions">
-            <button class="action-btn edit" onclick="updateItem('${deviceId}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="action-btn delete" onclick="deleteItem('${deviceId}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            </button>
-            <button class="action-btn disable" onclick="disableItem('${deviceId}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-            </button>
+            <button class="action-btn edit" onclick="updateItem('${did}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn delete" onclick="deleteItem('${did}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+            <label class="toggle-switch"><input type="checkbox" ${en ? 'checked' : ''} onchange="toggleEnable('${did}', this.checked)"><span class="toggle-slider"></span></label>
           </div>`;
-        list.appendChild(div);
-
-        if (highlightId && deviceId === highlightId) {
-          setTimeout(() => { scrollToElement(div); highlightElement(div); }, 100);
-        }
+        l.appendChild(div);
       });
     }
 
-    window.updateItem = function(id) {
+    window.toggleEnable = async (id, en) => {
+      const idx = currentData.findIndex(i => (i.device_id||i.id) === id);
+      if (idx === -1) return;
+      const p = (currentData[idx].expirydate || '01-01-2026').split('-');
+      currentData[idx].expirydate = `${p[0]}-${p[1]}-${en ? '2026' : '2020'}`;
+      if (await saveData()) { allDataArray = currentData; displayData(document.getElementById('searchInput').value); showToast(en ? '✅ Enabled!' : '🚫 Disabled!'); }
+    };
+
+    window.updateItem = id => {
       currentUpdateId = id;
-      let item = currentData.find(e => (e.device_id || e.id) === id);
-      if (item) {
-        document.getElementById('deviceId').value = item.device_id || id;
-        document.getElementById('key').value = item.key || '';
-        document.getElementById('expiry').value = item.expirydate || '';
-        document.getElementById('username').value = item.user || '';
-        document.getElementById('allowOffline').checked = item.Allowoffline || false;
-        document.getElementById('positionInput').value = allDataArray.findIndex(x => (x.device_id || x.id) === id) + 1;
-        document.getElementById('modalTitle').innerHTML = '✏️ Update License Key';
-        document.getElementById('deviceIdWarning').style.display = 'none';
-        document.getElementById('keyWarning').style.display = 'none';
-        document.getElementById('positionInfoModal').textContent = `(Total: ${allDataArray.length} keys)`;
+      const i = currentData.find(e => (e.device_id||e.id) === id);
+      if (i) {
+        document.getElementById('deviceId').value = i.device_id || id;
+        document.getElementById('key').value = i.key || '';
+        document.getElementById('expiry').value = i.expirydate || '';
+        document.getElementById('username').value = i.user || '';
+        document.getElementById('allowOffline').checked = i.Allowoffline || false;
+        document.getElementById('positionInput').value = allDataArray.findIndex(x => (x.device_id||x.id) === id) + 1;
+        document.getElementById('modalTitle').textContent = '✏️ Update';
+        ['deviceIdWarning','keyWarning'].forEach(w => document.getElementById(w).style.display = 'none');
         document.getElementById('keyModal').classList.add('show');
       }
-    }
+    };
 
-    window.deleteItem = async function(id) {
-      if (confirm(`Delete key for ${id}?`)) {
-        const idx = currentData.findIndex(i => (i.device_id || i.id) === id);
+    window.deleteItem = async id => {
+      if (confirm(`Delete ${id}?`)) {
+        const idx = currentData.findIndex(i => (i.device_id||i.id) === id);
         if (idx !== -1) currentData.splice(idx, 1);
-        
-        if (await saveDataToFirebase(`Delete ${id}`)) {
-          allDataArray = currentData;
-          displayData();
-          document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-          showToast('🗑 Deleted!');
-        }
+        if (await saveData()) { allDataArray = currentData; displayData(); showToast('🗑 Deleted!'); }
       }
-    }
+    };
 
-    window.disableItem = async function(id) {
-      if (confirm(`Disable key for ${id}?`)) {
-        const idx = currentData.findIndex(i => (i.device_id || i.id) === id);
-        if (idx !== -1) {
-          const parts = (currentData[idx].expirydate || '01-01-2026').split('-');
-          currentData[idx].expirydate = `${parts[0]}-${parts[1]}-2020`;
-          
-          if (await saveDataToFirebase(`Disable ${id}`)) {
-            allDataArray = currentData;
-            displayData('', id);
-            document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-            showToast('🚫 Disabled!');
-          }
-        }
-      }
-    }
-
-    function showSavedCard(deviceId, isUpdate) {
-      const item = allDataArray.find(i => (i.device_id || i.id) === deviceId);
-      if (!item) return;
-      const exp = isExpired(item.expirydate);
-      const pos = allDataArray.findIndex(d => (d.device_id || d.id) === deviceId) + 1;
-
-      document.getElementById('savedCardTitle').innerHTML = isUpdate ? '✅ Key Updated!' : '✅ Key Added!';
-      document.getElementById('savedCardPreview').innerHTML = `
-        <div class="device-card ${exp ? 'expired' : ''}" style="margin:0;position:relative;">
-          <div class="position-tag">#${pos}</div>
-          <div class="device-id">${item.device_id || deviceId}</div>
-          <div class="user-name-card">${item.user || 'N/A'}</div>
-          <div class="key-value" onclick="copyKey('${item.key || ''}')">${item.key || 'N/A'}</div>
-          <div class="meta-row">
-            <span class="expiry-text">${item.expirydate || 'N/A'}</span>
-            <span class="status-badge ${item.Allowoffline ? 'offline' : 'online'}">${item.Allowoffline ? 'Offline' : 'Online'}</span>
-          </div>
-          ${exp ? '<div class="expired-badge">⚠️ EXPIRED</div>' : ''}
-        </div>`;
-      document.getElementById('savedCardModal').classList.add('show');
-    }
-
-    window.closeSavedCardModal = function() {
-      document.getElementById('savedCardModal').classList.remove('show');
-      const preview = document.getElementById('savedCardPreview');
-      const deviceIdEl = preview.querySelector('.device-id');
-      if (deviceIdEl) {
-        const deviceId = deviceIdEl.textContent;
-        const card = document.getElementById(`card-${deviceId}`);
-        if (card) {
-          setTimeout(() => { scrollToElement(card); highlightElement(card); }, 100);
-        }
-      }
-    }
-
-    // Event Listeners
     document.getElementById('googleLoginBtn').addEventListener('click', signInWithGoogle);
     document.getElementById('logoutBtn').addEventListener('click', signOut);
 
-    // Collection selector
-    document.querySelectorAll('.collection-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        document.querySelectorAll('.collection-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCollection = btn.dataset.collection;
-        await loadCollectionData();
-        showToast(`📁 Loaded ${currentCollection}`);
-      });
-    });
+    document.querySelectorAll('.collection-btn').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.collection-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); currentCollection = b.dataset.collection; loadCollectionData(); showToast(`📁 ${currentCollection}`);
+    }));
 
-    // Save button
     document.getElementById('saveBtn').addEventListener('click', async () => {
-      const btn = document.getElementById('saveBtn');
-      const id = document.getElementById('deviceId').value.trim();
-      const key = document.getElementById('key').value.trim();
-      const expiry = document.getElementById('expiry').value.trim();
-      const user = document.getElementById('username').value.trim();
-      const allow = document.getElementById('allowOffline').checked;
-      const posVal = document.getElementById('positionInput').value.trim();
-
-      if (!id || !key || !expiry || !user) { alert('⚠️ Fill all fields!'); return; }
-      if (checkKeyDuplicate()) { return; }
-
-      let pos = parseInt(posVal);
-      if (!pos || pos < 1 || pos > allDataArray.length + 1) { alert('⚠️ Invalid position!'); return; }
-
-      btn.disabled = true;
-      const orig = btn.innerHTML;
-      btn.innerHTML = '<span class="spinner"></span> Saving...';
-
-      const entry = { device_id: id, key, expirydate: expiry, user, Allowoffline: allow };
+      const b = document.getElementById('saveBtn'), id = document.getElementById('deviceId').value.trim(), k = document.getElementById('key').value.trim(), ex = document.getElementById('expiry').value.trim(), u = document.getElementById('username').value.trim(), ao = document.getElementById('allowOffline').checked, ps = parseInt(document.getElementById('positionInput').value) || (allDataArray.length + 1);
+      if (!id || !k || !ex || !u) { alert('⚠️ Fill all!'); return; }
+      if (checkKeyDuplicate()) return;
+      b.disabled = true; b.innerHTML = '<span class="spinner"></span>';
+      const entry = { device_id: id, key: k, expirydate: ex, user: u, Allowoffline: ao };
       let arr = [...allDataArray];
-
-      if (currentUpdateId) {
-        const idx = arr.findIndex(i => (i.device_id || i.id) === currentUpdateId);
-        if (idx !== -1) arr.splice(idx, 1);
-      }
-
-      arr.splice(pos - 1, 0, entry);
-      currentData = arr;
-
-      const msg = currentUpdateId ? `Update ${id}` : `Add ${id}`;
-      const wasUpdate = !!currentUpdateId;
-      const result = await saveDataToFirebase(msg);
-
-      btn.disabled = false;
-      btn.innerHTML = orig;
-
-      if (result) {
-        document.getElementById('searchInput').value = '';
-        allDataArray = currentData;
-        displayData('', null);
-        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-        currentUpdateId = null;
-        closeKeyModal();
-        showSavedCard(id, wasUpdate);
-      }
+      if (currentUpdateId) { const idx = arr.findIndex(i => (i.device_id||i.id) === currentUpdateId); if (idx !== -1) arr.splice(idx, 1); }
+      arr.splice(ps - 1, 0, entry); currentData = arr;
+      if (await saveData()) { allDataArray = currentData; displayData(); closeKeyModal(); showToast(currentUpdateId ? '✅ Updated!' : '✅ Added!'); }
+      b.disabled = false; b.innerHTML = '🔥 Save'; currentUpdateId = null;
     });
 
-    // Search
-    document.getElementById('searchInput').addEventListener('input', (e) => displayData(e.target.value));
+    document.getElementById('searchInput').addEventListener('input', e => displayData(e.target.value));
+    document.querySelectorAll('.filter-tab').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.filter-tab').forEach(x => x.classList.remove('active')); t.classList.add('active'); currentFilter = t.dataset.filter; displayData(document.getElementById('searchInput').value); }));
+    document.querySelectorAll('.sub-tab').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active')); document.querySelectorAll('#tab-devices > .tab-content').forEach(c => c.classList.remove('active')); t.classList.add('active'); document.getElementById(`subtab-${t.dataset.subtab}`).classList.add('active'); }));
 
-    // Filter tabs
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentFilter = tab.dataset.filter;
-        displayData(document.getElementById('searchInput').value);
-      });
-    });
+    document.getElementById('updateFromJsonBtn').addEventListener('click', async () => { try { currentData = JSON.parse(document.getElementById('rawJsonEditor').value); if (await saveData()) { allDataArray = currentData; displayData(); showToast('✅ Saved!'); } } catch (e) { alert('❌ Invalid JSON!'); } });
+    document.getElementById('formatJsonBtn').addEventListener('click', () => { try { document.getElementById('rawJsonEditor').value = JSON.stringify(JSON.parse(document.getElementById('rawJsonEditor').value), null, 2); showToast('✨ Formatted!'); } catch (e) { alert('❌ Invalid JSON!'); } });
+    document.getElementById('copyJsonBtn').addEventListener('click', () => { document.getElementById('rawJsonEditor').select(); document.execCommand('copy'); showToast('📋 Copied!'); });
+    document.getElementById('resetJsonBtn').addEventListener('click', () => { document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2); showToast('🔄 Reset!'); });
+    document.getElementById('refreshDataBtn').addEventListener('click', () => { loadCollectionData(); showToast('🔄 Refreshed!'); });
 
-    // Sub tabs
-    document.querySelectorAll('.sub-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('#tab-devices > .tab-content').forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`subtab-${tab.dataset.subtab}`).classList.add('active');
-      });
-    });
+    document.querySelectorAll('.theme-option').forEach(o => o.addEventListener('click', () => { document.querySelectorAll('.theme-option').forEach(x => x.classList.remove('active')); o.classList.add('active'); document.body.setAttribute('data-theme', o.dataset.theme); localStorage.setItem('theme', o.dataset.theme); }));
 
-    // JSON Editor buttons
-    document.getElementById('updateFromJsonBtn').addEventListener('click', async () => {
-      try {
-        const parsed = JSON.parse(document.getElementById('rawJsonEditor').value.trim());
-        if (confirm('Save JSON to Firebase?')) {
-          currentData = parsed;
-          if (await saveDataToFirebase('JSON Update')) {
-            allDataArray = currentData;
-            displayData();
-            showToast('✅ Saved!');
-          }
-        }
-      } catch (e) { alert('❌ Invalid JSON!'); }
-    });
+    document.getElementById('username').addEventListener('input', function() { const v = this.value.toLowerCase(), s = document.getElementById('userSuggestions'); s.innerHTML = ''; if (!v) { s.classList.remove('show'); return; } const m = [...new Set(allDataArray.map(x => x.user).filter(u => u && u.toLowerCase().includes(v)))].slice(0, 5); if (!m.length) { s.classList.remove('show'); return; } m.forEach(n => { const d = document.createElement('div'); d.className = 'suggestion-item'; d.textContent = n; d.onclick = () => { document.getElementById('username').value = n; s.classList.remove('show'); }; s.appendChild(d); }); s.classList.add('show'); });
+    document.getElementById('positionInput').addEventListener('input', function() { const v = this.value.toLowerCase(), s = document.getElementById('positionSuggestions'); s.innerHTML = ''; if (!v || /^\d+$/.test(v)) { s.classList.remove('show'); return; } const m = allDataArray.filter(i => (i.user||'').toLowerCase().includes(v)).slice(0, 5); if (!m.length) { s.classList.remove('show'); return; } m.forEach(i => { const p = allDataArray.findIndex(d => (d.device_id||d.id) === (i.device_id||i.id)) + 1, d = document.createElement('div'); d.className = 'suggestion-item'; d.innerHTML = `<strong>#${p}</strong> - ${i.user}`; d.onclick = () => { document.getElementById('positionInput').value = p; s.classList.remove('show'); }; s.appendChild(d); }); s.classList.add('show'); });
+    document.addEventListener('click', e => { if (!document.getElementById('username').contains(e.target)) document.getElementById('userSuggestions').classList.remove('show'); if (!document.getElementById('positionInput').contains(e.target)) document.getElementById('positionSuggestions').classList.remove('show'); });
 
-    document.getElementById('formatJsonBtn').addEventListener('click', () => {
-      try {
-        document.getElementById('rawJsonEditor').value = JSON.stringify(JSON.parse(document.getElementById('rawJsonEditor').value.trim()), null, 2);
-        showToast('✨ Formatted!');
-      } catch (e) { alert('❌ Invalid JSON!'); }
-    });
-
-    document.getElementById('copyJsonBtn').addEventListener('click', () => {
-      document.getElementById('rawJsonEditor').select();
-      document.execCommand('copy');
-      showToast('📋 Copied!');
-    });
-
-    document.getElementById('resetJsonBtn').addEventListener('click', () => {
-      if (confirm('Reset?')) {
-        document.getElementById('rawJsonEditor').value = JSON.stringify(currentData, null, 2);
-        showToast('🔄 Reset!');
-      }
-    });
-
-    // Refresh button
-    document.getElementById('refreshDataBtn').addEventListener('click', async () => {
-      await loadCollectionData();
-      showToast('🔄 Refreshed!');
-    });
-
-    // Theme selector
-    document.querySelectorAll('.theme-option').forEach(opt => {
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
-        document.body.setAttribute('data-theme', opt.dataset.theme);
-        localStorage.setItem('firebase_theme', opt.dataset.theme);
-      });
-    });
-
-    // User suggestions
-    document.getElementById('username').addEventListener('input', function() {
-      const v = this.value.toLowerCase();
-      const sug = document.getElementById('userSuggestions');
-      sug.innerHTML = '';
-      if (!v) { sug.classList.remove('show'); return; }
-      const matches = [...new Set(allDataArray.map(x => x.user).filter(u => u && u.toLowerCase().includes(v)))].slice(0, 5);
-      if (!matches.length) { sug.classList.remove('show'); return; }
-      matches.forEach(name => {
-        const d = document.createElement('div');
-        d.className = 'suggestion-item';
-        d.textContent = name;
-        d.onclick = () => { document.getElementById('username').value = name; sug.classList.remove('show'); };
-        sug.appendChild(d);
-      });
-      sug.classList.add('show');
-    });
-
-    // Position suggestions
-    document.getElementById('positionInput').addEventListener('input', function() {
-      const v = this.value.toLowerCase();
-      const sug = document.getElementById('positionSuggestions');
-      sug.innerHTML = '';
-      if (!v || /^\d+$/.test(v)) { sug.classList.remove('show'); return; }
-      const matches = allDataArray.filter(i => (i.user || '').toLowerCase().includes(v)).slice(0, 5);
-      if (!matches.length) { sug.classList.remove('show'); return; }
-      matches.forEach(i => {
-        const did = i.device_id || i.id;
-        const pos = allDataArray.findIndex(d => (d.device_id || d.id) === did) + 1;
-        const d = document.createElement('div');
-        d.className = 'suggestion-item';
-        d.innerHTML = `<strong>#${pos}</strong> - ${i.user || 'N/A'}`;
-        d.onclick = () => { document.getElementById('positionInput').value = pos; sug.classList.remove('show'); };
-        sug.appendChild(d);
-      });
-      sug.classList.add('show');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!document.getElementById('username').contains(e.target)) document.getElementById('userSuggestions').classList.remove('show');
-      if (!document.getElementById('positionInput').contains(e.target)) document.getElementById('positionSuggestions').classList.remove('show');
-    });
-
-    // Scroll to top button
-    window.addEventListener('scroll', () => {
-      document.getElementById('topBtn').style.display = window.scrollY > 200 ? 'flex' : 'none';
-    });
-
-    // Load saved theme
-    const savedTheme = localStorage.getItem('firebase_theme');
-    if (savedTheme) {
-      document.body.setAttribute('data-theme', savedTheme);
-      document.querySelectorAll('.theme-option').forEach(o => {
-        o.classList.toggle('active', o.dataset.theme === savedTheme);
-      });
-    }
+    window.addEventListener('scroll', () => { document.getElementById('topBtn').style.display = window.scrollY > 200 ? 'flex' : 'none'; });
+    const st = localStorage.getItem('theme'); if (st) { document.body.setAttribute('data-theme', st); document.querySelectorAll('.theme-option').forEach(o => o.classList.toggle('active', o.dataset.theme === st)); }
   </script>
 </body>
 </html>
